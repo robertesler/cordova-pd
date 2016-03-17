@@ -61,8 +61,8 @@
             </feature>
         </config-file>
         
-        <header-file src="src/ios/objc/PdPlugin.h" />
-        <source-file src="src/ios/objc/PdPlugin.m" />
+        <header-file src="src/ios/PdPlugin.h" />
+        <source-file src="src/ios/PdPlugin.m" />
         <!-- Objective-C wrapper -->
         
         <header-file src="src/ios/objc/AudioHelpers.h" />
