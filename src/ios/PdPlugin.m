@@ -1,0 +1,226 @@
+/*
+ Copyright 2016 Robert Esler
+ 
+ */
+
+
+#import "PdPlugin.h"
+
+
+
+@implementation PdPlugin
+
+@synthesize theFloat;
+@synthesize theBang;
+@synthesize theString;
+@synthesize theList;
+@synthesize theMessage;
+@synthesize theArguments;
+
+// intialize libpd, change settings via the audioController
+
+- (void)pluginInitialize
+{
+    
+    self.audioController = [[PdAudioController alloc] init] ;
+    PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
+                                                                  numberChannels:2
+                                                                    inputEnabled:NO
+                                                                   mixingEnabled:NO];
+    if (status == PdAudioError) {
+        NSLog(@"Error! Could not configure PdAudioController");
+    } else if (status == PdAudioPropertyChanged) {
+        NSLog(@"Warning: some of the audio parameters were not accceptable.");
+    } else {
+        NSLog(@"Audio Configuration successful.");
+    }
+    
+    [PdBase openFile:@"/www/cordova.pd" path:[[NSBundle mainBundle] bundlePath] ];
+     // was [PdBase openFile:@"test.pd" path:[[NSBundle mainBundle] resourcePath]];
+    
+    [self.audioController setActive:YES];
+    
+    // log actual settings
+    [self.audioController print];
+    NSLog(@"Pd Plugin Initialized!");
+}
+
+- (void)sendFloat:(CDVInvokedUrlCommand*)command
+{
+    
+   // CDVPluginResult* pdFloat;
+    float sendToPd;
+    
+    NSString* receiveName = [command.arguments objectAtIndex:0];
+    //NSNumber* value = [command.arguments objectAtIndex:1 withDefault:[NSNumber numberWithFloat:0.0]];
+    
+    NSNumber* value = [command.arguments objectAtIndex:1];
+    sendToPd = value.floatValue;
+    
+    [PdBase sendFloat:sendToPd toReceiver:receiveName];
+    
+    
+}
+
+- (void)sendMessage: (CDVInvokedUrlCommand* )command
+{
+    NSString* receiveName = [command.arguments objectAtIndex:0];
+    NSString* message = [command.arguments objectAtIndex:1];
+    NSArray* list = [command.arguments objectAtIndex:2];
+    
+    [PdBase sendMessage:message withArguments:list toReceiver:receiveName];
+    
+}
+
+- (void)sendBang: (CDVInvokedUrlCommand *)command
+{
+    NSString* receiveName = [command.arguments objectAtIndex:0];
+    NSLog(@"sendBang!\n");
+    
+    [PdBase sendBangToReceiver:receiveName];
+}
+
+- (void)sendSymbol: (CDVInvokedUrlCommand *)command {
+    
+    NSString* receiveName = [command.arguments objectAtIndex:0];
+    NSString* symbol = [command.arguments objectAtIndex:1];
+    
+    [PdBase sendSymbol:symbol toReceiver:receiveName];
+    
+    
+}
+
+- (void)sendList:(CDVInvokedUrlCommand *)command {
+    
+    NSString* receiveName = [command.arguments objectAtIndex:0];
+    NSArray* list = [command.arguments objectAtIndex:1];
+    
+    [PdBase sendList:list toReceiver:receiveName];
+    
+}
+
+//Receive Data from Pd...
+
+- (void) cordovaReceiveBang:(CDVInvokedUrlCommand *)command {
+    
+    NSString* theSend = [command.arguments objectAtIndex:0];
+    NSLog(@"listening to %@\n", theSend);
+    CDVPluginResult* pluginResult = nil;
+
+    PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+    [PdBase setDelegate:self];
+    [PdBase subscribe:theSend];
+    [dispatcher addListener:self forSource:theSend];
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:theBang];
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+   
+    
+}
+
+- (void) cordovaReceiveFloat:(CDVInvokedUrlCommand *)command {
+    
+    NSString* theSend = [command.arguments objectAtIndex:0];
+    NSLog(@"listening to %@\n", theSend);
+    CDVPluginResult* pluginResult = nil;
+    
+     PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+    [PdBase setDelegate:self];
+    [PdBase subscribe:theSend];
+    [dispatcher addListener:self forSource:theSend];
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:theFloat];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    
+}
+
+- (void)cordovaReceiveSymbol:(CDVInvokedUrlCommand *)command {
+    NSString* theSend = [command.arguments objectAtIndex:0];
+    NSLog(@"listening to %@\n", theSend);
+    CDVPluginResult* pluginResult = nil;
+    
+    PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+    [PdBase setDelegate:self];
+    [PdBase subscribe:theSend];
+    [dispatcher addListener:self forSource:theSend];
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:theString];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+- (void)cordovaReceiveList:(CDVInvokedUrlCommand *)command {
+    NSString* theSend = [command.arguments objectAtIndex:0];
+    NSLog(@"listening to %@\n", theSend);
+    CDVPluginResult* pluginResult = nil;
+    
+    PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+    [PdBase setDelegate:self];
+    [PdBase subscribe:theSend];
+    [dispatcher addListener:self forSource:theSend];
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:theList];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+    
+}
+
+- (void)cordovaReceiveMessage:(CDVInvokedUrlCommand *)command {
+    NSString* theSend = [command.arguments objectAtIndex:0];
+    NSLog(@"listening to %@\n", theSend);
+    CDVPluginResult* pluginResult = nil;
+    
+    PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+    [PdBase setDelegate:self];
+    [PdBase subscribe:theSend];
+    [dispatcher addListener:self forSource:theSend];
+    
+    NSArray *theMessageWithArguments;
+    theMessageWithArguments = [NSArray arrayWithObjects:theMessage, theArguments, nil];
+    
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsMultipart:theMessageWithArguments];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+}
+
+// this was just a test using the original Cordova format
+- (void)test:(CDVInvokedUrlCommand*)command
+{
+    NSLog(@"Yo!\n");
+    CDVPluginResult* pluginResult = nil;
+    NSString* myarg = [command.arguments objectAtIndex:0];
+    
+    if (myarg != nil) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"test is good"];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Arg was null"];
+    }
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
+
+- (void)receiveFloat:(float)received fromSource:(NSString *)source {
+    
+    theFloat = (double)received;
+}
+
+- (void)receiveBangFromSource:(NSString *)source {
+    
+    theBang = true;
+}
+
+- (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
+    
+    theString = symbol;
+}
+
+- (void)receiveList:(NSArray *)list fromSource:(NSString *)source {
+    theList = list;
+}
+
+- (void) receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
+    theMessage = message;
+    theArguments = arguments;
+}
+
+@end
