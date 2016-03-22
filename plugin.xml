@@ -34,7 +34,7 @@
     </description>
     
     <repo>
-        https://github.com/???
+        https://github.com/robertesler/cordova-pd.git
     </repo>
     
     <keywords>
@@ -49,8 +49,8 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
     
-    <js-module src="www/cordova-pd.js" name="pd">
-    </js-module>
+    <asset src="www/cordova-pd.js" target="js/cordova-pd.js" />
+    
     
     <!-- ios -->
     <platform name="ios">
@@ -81,7 +81,7 @@
         <source-file src="src/ios/objc/PdMidiDispatcher.m" />
         
         <!-- libpd.a: pure data and libpd_wrapper archive -->
-        <source-file src="src/ios/libpd.a" compiler-flags="-DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -DHAVE_ALLOCA_H" />
+        <source-file src="src/ios/libpd.a" framework="true" compiler-flags="-DPD -DHAVE_UNISTD_H -DUSEAPI_DUMMY -DHAVE_ALLOCA_H" />
         
     </platform>
     
