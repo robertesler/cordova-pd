@@ -81,7 +81,7 @@
         <source-file src="src/ios/objc/PdMidiDispatcher.m" />
         
         <!-- libpd.a: pure data and libpd_wrapper archive -->
-        <source-file src="src/ios/libpd.a" framework="true"  />
+        <source-file src="src/ios/libpd.a" framework="true" compiler-flags="-DPD -DUSEAPI_DUMMY -DLIBPD_EXTRA" />
         
         <!-- headers for linking to libpd.a -->
         <header-file src="src/ios/headers/g_all_guis.h" />
