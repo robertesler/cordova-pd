@@ -83,7 +83,7 @@
         <!-- libpd.a: pure data and libpd_wrapper archive -->
         <source-file src="src/ios/libpd.a" framework="true" compiler-flags="-DPD -DUSEAPI_DUMMY -DLIBPD_EXTRA" />
         
-        <!-- headers for linking to libpd.a -->
+        <!-- headers for linking to libpd.a, may have to add these manually :(
         <header-file src="src/ios/headers/g_all_guis.h" />
         <header-file src="src/ios/headers/g_canvas.h" />
         <header-file src="src/ios/headers/m_imp.h" />
@@ -98,6 +98,7 @@
         <header-file src="src/ios/headers/z_libpd.h" />
         <header-file src="src/ios/headers/z_print_util.h" />
         <header-file src="src/ios/headers/z_queued.h" />
+        -->
         
     </platform>
     
