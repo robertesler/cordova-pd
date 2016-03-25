@@ -1,4 +1,13 @@
-# Installing the library
+# Introduction
+This plugin is meant to unite the libpd and cordova frameworks so app developers can 
+also have the power of Pure Data for audio and music synthesis.  
+
+I assume the following:
+1) You already know how to use Pure Data.
+2) You are familiar with the Cordova framework and how to use and install plugins.
+3) You have at least some basic knowledge of programming in different languages like Obj-C, Java and web languages.
+ 
+## Installing the library
 
 To clone the repository to the root plugins folder try:
 ```
@@ -39,7 +48,7 @@ I have updated the libpd Objective-C wrapper to include Automatic Reference Coun
 this plugin. 
 
 You can of course build your project manually cloning libpd yourself.  You would just need the 
-PdPlugin.m, PdPlugin.h files and cordova-pd.js files that come with distribution.
+PdPlugin.m, PdPlugin.h files and cordova-pd.js file that comes with this distribution.
 
 ## Using Custom Externals
 To add any custom externals you need to follow the libpd protocol here:
