@@ -23,7 +23,9 @@ cordova prepare ios
 5) Build your application using Xcode.  The cordova build option does not currently work when
   linking the static library.
 
-#NOTE: This project uses dependencies that are maintained by other developers.  These include:
+#NOTE:
+
+ This project uses dependencies that are maintained by other developers.  These include:
 
 libpd 
 ```
