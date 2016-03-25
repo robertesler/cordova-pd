@@ -23,7 +23,7 @@ cordova prepare ios
 5) Build your application using Xcode.  The cordova build option does not currently work when
   linking the static library.
 
-NOTE: This project uses dependencies that are maintained by other developers.  These include:
+#NOTE: This project uses dependencies that are maintained by other developers.  These include:
 
 libpd 
 ```
@@ -33,7 +33,7 @@ pure data (source)
 ```
 git clone git://git.code.sf.net/p/pure-data/pure-data
 ```
-I have updated the libpd Objective wrapper to include Automatic Reference Counting (ARC) with 
+I have updated the libpd Objective-C wrapper to include Automatic Reference Counting (ARC) with 
 this plugin. 
 
 You can of course build your project manually cloning libpd yourself.  You would just need the 
