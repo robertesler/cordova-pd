@@ -13,14 +13,18 @@ cordova plugin add https://github.com/robertesler/cordova-pd.git
 ```
 cordova prepare ios
 ```
+
 3) Open the Xcode project in Xcode. Under the "Build Phases" add a new "Headers Phase"
  You can do this by pressing the '+' icon.
+
 4) Add all the .h files in the plugin root folder ../org.urbanstew.cordova.pd/src/ios/headers/
   to the "Project" headers phase.
+
 5) Build your application using Xcode.  The cordova build option does not currently work when
   linking the static library.
 
-NOTE: This project uses dependencies that are maintain by other developers.  These include:
+NOTE: This project uses dependencies that are maintained by other developers.  These include:
+
 libpd 
 ```
 git clone https://github.com/libpd/libpd.git
