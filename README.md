@@ -54,6 +54,10 @@ PdPlugin.m, PdPlugin.h files and cordova-pd.js file that comes with this distrib
 To add any custom externals you need to follow the libpd protocol here:
 [libpd iOS wiki](https://github.com/libpd/pd-for-ios/wiki/ios) 
 
+## Using your patches
+Your main patch needs to be called cordova.pd and located in the root /www folder.  You can use
+other abstractions or folders, look at the [declare] object.
+
 ## Android Version
 
 Coming soon, in development.
