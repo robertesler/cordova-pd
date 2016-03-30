@@ -71,7 +71,7 @@ To use the plugin add ng-cordova-pd.js to your root /www/jsand  to your index.ht
 ```
 <script src="js/ng-cordova-pd.js"></script>
 ```
-Add ```'ngPd'``` to your app.js modulse, and inject ```$puredata``` into your 
+Add ```'ngPd'``` to your app.js modules, and inject ```$puredata``` into your 
 controller. 
 
 Then in your controllers follow this style:
