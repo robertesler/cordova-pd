@@ -61,3 +61,30 @@ other abstractions or folders, look at the [declare] object.
 ## Android Version
 
 Coming soon, in development.
+
+## Using ng-cordova-pd
+
+The Angular JS wrapper for this plugin allows you to use cordova-pd in Ionic
+projects and any other projects that use Angular JS.  
+
+To use the plugin add to your index.html:
+```
+<script src="js/ng-cordova-pd.js"></script>
+```
+Then in your controllers follow this style:
+```
+$scope.test = function () {
+            
+                $ionicPlatform.ready(function() {
+                        $puredata.sendBang("start").then(function (result) {
+                            console.log("bang: " + result);
+                        }, function (err) {
+                        // error
+                            console.log("Error: " + err);
+                        });
+                });//end platform ready
+            };//end $scope.test
+```
+Make sure to wrap your plugin function calls in ```$ionicPlatform.ready()``` and 
+to use the ```.then()``` method.  This is especially if you are trying to receive
+data from Pd.  

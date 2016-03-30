@@ -24,7 +24,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="org.urbanstew.cordova.pd"
-    version="0.0.1-dev">
+    version="0.0.2-dev">
     
     <name>PdPlugin</name>
     
@@ -49,8 +49,9 @@
         <engine name="cordova" version=">=3.0.0" />
     </engines>
     
-    <asset src="www/cordova-pd.js" target="js/cordova-pd.js" />
-    
+	<js-module src="www/cordova-pd.js" name="PdPlugin">
+        	<clobbers target="Pd"/>
+    	</js-module>    
     
     <!-- ios -->
     <platform name="ios">
@@ -58,6 +59,7 @@
         <config-file target="config.xml" parent="/*">
             <feature name="PdPlugin">
                 <param name="ios-package" value="PdPlugin"/>
+		<param name="onload" value="true"/>
             </feature>
         </config-file>
         
