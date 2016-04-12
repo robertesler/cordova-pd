@@ -114,7 +114,8 @@
             </feature>
         </config-file>
         
-        <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java" />
+        <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java"
+        target-dir="org/urbanstew/cordova/pd"/>
         <framework src="org.urbanstew.cordova.pd:pd-core:+" />
         
     </platform>
