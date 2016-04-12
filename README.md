@@ -67,7 +67,7 @@ Coming soon, in development.
 The Angular JS wrapper for this plugin allows you to use cordova-pd in Ionic
 projects and any other projects that use Angular JS.  
 
-To use the plugin add ng-cordova-pd.js to your root /www/jsand  to your index.html:
+To use the plugin add ng-cordova-pd.js to your root /www/js and  to your index.html:
 ```
 <script src="js/ng-cordova-pd.js"></script>
 ```
