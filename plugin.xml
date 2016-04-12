@@ -37,6 +37,8 @@
         https://github.com/robertesler/cordova-pd.git
     </repo>
     
+    <issue>https://github.com/robertesler/cordova-pd/issues</issue>
+    
     <keywords>
         Pure Data, music, digital audio processing
     </keywords>
@@ -104,6 +106,18 @@
         
     </platform>
     
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="PdPlugin">
+                <param name="android-package" value="org.urbanstew.cordova.pd.PdPlugin"/>
+                <param name="onload" value="true"/>
+            </feature>
+        </config-file>
+        
+        <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java" />
+        <framework src="org.urbanstew.cordova.pd:pd-core:+" />
+        
+    </platform>
   
     
     
