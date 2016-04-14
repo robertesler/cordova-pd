@@ -1,10 +1,19 @@
-package org.urbanstew.cordova.pd
+/*
+Does this shit get saved?
+*/
+package org.urbanstew.cordova.pd;
 
 import java.io.File;
+import java.io.IOException;
+import android.util.Log;
+import android.content.Context;
+import android.app.Activity;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.PluginResult;
+import org.apache.cordova.CordovaWebView;
+import org.apache.cordova.CordovaInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -12,11 +21,11 @@ import org.json.JSONObject;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.io.PdAudio;
-import org.puredata.core.*;
+import org.puredata.core.PdReceiver;
+import org.puredata.core.PdBase;
 
 public class PdPlugin extends CordovaPlugin {
 
-    private PdDispatcher dispatch = new PdDispatcher();
     private boolean theBang = false;
     private double theFloat = 0;
     private String[] theList;
@@ -24,10 +33,14 @@ public class PdPlugin extends CordovaPlugin {
     private String theMessage;
     private String[] theMessageArguments;
     private String[] theListArguments;
-    
+	private CallbackContext callback;
     //This should handle data from Pd
-    private final PdListener listener = new PdListener() {
+    private final PdReceiver receiver = new PdReceiver() {
 
+@Override public void print(String s) {
+			Log.i("From Pd: ", s);
+}
+		
 @Override
     public void receiveBang(String source) {
         theBang = true;
@@ -43,7 +56,7 @@ public class PdPlugin extends CordovaPlugin {
         theList = new String[args.length];
         int i = 0;
         for (Object arg: args) {
-            theList[i++] = args.toString();
+            theList[i++] = arg.toString();
         }
     }
 
@@ -53,7 +66,7 @@ public class PdPlugin extends CordovaPlugin {
         theMessageArguments = new String[args.length];
         int i = 0;
         for (Object arg: args) {
-            theMessageArguments[i++] = args.toString();
+            theMessageArguments[i++] = arg.toString();
         }
     }
 
@@ -64,16 +77,29 @@ public class PdPlugin extends CordovaPlugin {
 
 };//end receiver
 
-
+	
 /* this is how we initialize Pd */
 private void initPd() {
-        PdBase.setReceiver(dispatch);
-        AudioParameters.init(this);
+        Log.i("initPd", " shit.");
+        PdBase.setReceiver(receiver);
+//        AudioParameters.init(this);
         int srate = Math.max(44100, AudioParameters.suggestSampleRate());
-        PdAudio.initAudio(srate, 0, 2, 1, true);
-        File dir = getFilesDir();
+        try {
+			PdAudio.initAudio(srate, 0, 2, 1, true);
+		}
+		catch(IOException e) {
+			Log.w("Audio error: ", e);	
+		}
+		Activity activity = new Activity();
+		Context context = activity.getApplicationContext();
+        File dir = context.getFilesDir();
         File patchFile = new File(dir, "www/cordova.pd");
-        PdBase.openPatch(patchFile.getAbsolutePath());
+        try {
+			PdBase.openPatch(patchFile.getAbsolutePath());
+		}
+		catch(IOException e) {
+			Log.w("Patch file error: ", e);	
+		}
 }
 
 
@@ -81,13 +107,13 @@ private void initPd() {
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
         this.initPd();
-        PdAudio.startAudio(this);
+        PdBase.computeAudio(true);
     }
 
 @Override
 public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
     throws JSONException {
-        
+        callback = callbackContext;
         if(action.equals("sendBang"))
         {
             this.sendBang(args.getString(0));
@@ -149,21 +175,22 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
 
 
 @Override
-private void onDestroy() {
+public void onDestroy() {
         // make sure to release all resources
         PdAudio.stopAudio();
         PdAudio.release();
         PdBase.release();
     }
-    
+
+	
     //Send to Pd
     
     private void sendBang(String receiveName) {
         PdBase.sendBang(receiveName);
     }
     
-    private void sendFloat(String receiveName, float f) {
-        PdBase.sendFloat(receiveName, f);
+    private void sendFloat(String receiveName, double f) {
+        PdBase.sendFloat(receiveName, (float)f);
     }
     
     private void sendList(String receiveName, Object ... args) {
@@ -179,32 +206,39 @@ private void onDestroy() {
     }
 
     private void cordovaReceiveBang(String sendName) {
-        dispatch.addListener(sendName, listener);
-        this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+        PdBase.subscribe(sendName);
+        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
             theBang));
     }
 
     private void cordovaReceiveFloat(String sendName) {
-        dispatch.addListener(sendName, listener);
-        this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-                                                                   theFloat));
+        PdBase.subscribe(sendName);
+        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+                                                                   (float)theFloat));
     }
 
     private void cordovaReceiveList(String sendName) {
-        dispatch.addListener(sendName, listener);
-        this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-        theList));
+        PdBase.subscribe(sendName);
+		JSONArray list = null;
+		try {
+			list = new JSONArray(theList);
+		}
+		catch(JSONException j) {
+			Log.w("Idiot, it don't work: ", j);
+		}	
+        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+        list));
     }
 
     private void cordovaReceiveMessage(String sendName) {
-        dispatch.addListener(sendName, listener);
-        this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+        PdBase.subscribe(sendName);
+        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
         theMessage));
     }
 
     private void cordovaReceiveSymbol(String sendName) {
-            dispatch.addListener(sendName, listener);
-            this.callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+            PdBase.subscribe(sendName);
+            this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
             theSymbol));
     }
 
