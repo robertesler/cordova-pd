@@ -54,13 +54,26 @@ PdPlugin.m, PdPlugin.h files and cordova-pd.js file that comes with this distrib
 To add any custom externals you need to follow the libpd protocol here:
 [libpd iOS wiki](https://github.com/libpd/pd-for-ios/wiki/ios) 
 
-## Using your patches
+## Using your patches in iOS
 Your main patch needs to be called cordova.pd and located in the root /www folder.  You can use
 other abstractions or folders, look at the [declare] object.
 
-## Android Version
+## Instructions for Android 
 
-Coming soon, in development.
+The Android version is still in development.  It will run as of now but still in a testing phase. 
+Check in regularly for any updates.
+
+1) Make sure to add the plugin to your config.xml in your root folder by adding:
+```
+<plugin name="PdPlugin" value="PdPlugin" />
+```
+2) Then either add the android platform or try:
+```
+cordova prepare android
+```
+The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When the plugin installs
+it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
+you plan to release both iOS and Android.  
 
 ## Using ng-cordova-pd
 
@@ -91,3 +104,51 @@ $scope.test = function () {
 Make sure to wrap your plugin function calls in ```$ionicPlatform.ready()``` and 
 to use the ```.then()``` method.  This is especially if you are trying to receive
 data from Pd.  
+
+## API
+
+###Sending Data to Pd
+
+Send a bang to a receiver
+```
+$puredata.sendBang("receiveName")
+```
+Send a float to a receiver
+```
+$puredata.sendFloat("receiveName", float)
+```
+Send a symbol to a receiver
+```
+$puredata.sendSymbol("receiveName", symbol)
+```
+Send a message to a receiver
+```
+$puredata.sendMessage("receiveName", message, argumentList)
+```
+Send a list to a receiver
+```
+$puredata.sendList("receiveName", list)
+```
+
+###Receiving Data from Pd
+
+Receive a bang from a sender (returns a bool set as true)
+```
+$puredata.receiveBang("sendName")
+```
+Receive a float from a sender (returns a float)
+```
+$puredata.receiveFloat("sendName")
+```
+Receive a symbol from a sender (returns a String or JSON)
+```
+$puredata.receiveSymbol("sendName")
+```
+Receive a message from a sender (returns a String or JSON)
+```
+$puredata.receiveMessage("sendName")
+```
+Receive a List to a sender (returns an array or JSON array)
+```
+$puredata.receiveList("sendName")
+```

@@ -87,23 +87,6 @@
         <!-- libpd.a: pure data and libpd_wrapper archive -->
         <source-file src="src/ios/libpd.a" framework="true" compiler-flags="-DPD -DUSEAPI_DUMMY -DLIBPD_EXTRA" />
         
-        <!-- headers for linking to libpd.a, may have to add these manually :(
-        <header-file src="src/ios/headers/g_all_guis.h" />
-        <header-file src="src/ios/headers/g_canvas.h" />
-        <header-file src="src/ios/headers/m_imp.h" />
-        <header-file src="src/ios/headers/m_pd.h" />
-        <header-file src="src/ios/headers/ringbuffer.h" />
-        <header-file src="src/ios/headers/s_audio_alsa.h" />
-        <header-file src="src/ios/headers/s_audio_paring.h" />
-        <header-file src="src/ios/headers/s_stuff.h" />
-        <header-file src="src/ios/headers/s_utf8.h" />
-        <header-file src="src/ios/headers/x_libpdreceive.h" />
-        <header-file src="src/ios/headers/z_hooks.h" />
-        <header-file src="src/ios/headers/z_libpd.h" />
-        <header-file src="src/ios/headers/z_print_util.h" />
-        <header-file src="src/ios/headers/z_queued.h" />
-        -->
-        
     </platform>
     
     <platform name="android">
@@ -117,6 +100,7 @@
         <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java"
         target-dir="src/org/urbanstew/cordova/pd"/>
         <resource-file src="libs/pd-core-1.0.1.aar" target="libs/pd-core-1.0.1.aar" />
+        <resource-file src="www/cordova.pd" target="res/raw/cordova.pd" />
         <framework src="pd.gradle" custom="true" type="gradleReference" />
         
     </platform>
