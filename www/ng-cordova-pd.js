@@ -35,7 +35,7 @@ angular.module('ngPd', [])
                 sendMessage: function (receiveName, theMessage, theList) {
                        var d = $q.defer();
                        
-                       $window.plugins.pd.sendMessage(receiveName, theMessage, theList function (message) {
+                       $window.plugins.pd.sendMessage(receiveName, theMessage, theList, function (message) {
                                                     d.resolve(message);
                                                     }, function (error) {
                                                     d.reject(error);
