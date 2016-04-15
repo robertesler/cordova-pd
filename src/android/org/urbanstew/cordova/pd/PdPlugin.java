@@ -1,13 +1,15 @@
 /*
-Does this shit get saved?
+Android plugin for libpd and cordova.  It's a bunch of shit right now...
 */
 package org.urbanstew.cordova.pd;
 
 import java.io.File;
 import java.io.IOException;
 import android.util.Log;
-import android.content.Context;
-import android.app.Activity;
+import java.io.InputStream;
+import android.content.res.Resources;
+
+import com.ionicframework.starter.R;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -23,6 +25,7 @@ import org.puredata.android.io.AudioParameters;
 import org.puredata.android.io.PdAudio;
 import org.puredata.core.PdReceiver;
 import org.puredata.core.PdBase;
+import org.puredata.core.utils.IoUtils;
 
 public class PdPlugin extends CordovaPlugin {
 
@@ -82,37 +85,40 @@ public class PdPlugin extends CordovaPlugin {
 private void initPd() {
         Log.i("initPd", " shit.");
         PdBase.setReceiver(receiver);
-//        AudioParameters.init(this);
+        AudioParameters.init(this.cordova.getActivity());
         int srate = Math.max(44100, AudioParameters.suggestSampleRate());
         try {
 			PdAudio.initAudio(srate, 0, 2, 1, true);
 		}
 		catch(IOException e) {
-			Log.w("Audio error: ", e);	
+			Log.w("Audio error: ", e);
 		}
-		Activity activity = new Activity();
-		Context context = activity.getApplicationContext();
-        File dir = context.getFilesDir();
-        File patchFile = new File(dir, "www/cordova.pd");
+        Resources res = this.cordova.getActivity().getResources();
+        File patchFile = null;
         try {
-			PdBase.openPatch(patchFile.getAbsolutePath());
-		}
-		catch(IOException e) {
-			Log.w("Patch file error: ", e);	
-		}
+            InputStream in = res.openRawResource(R.raw.cordova);
+            patchFile = IoUtils.extractResource(in, "cordova.pd", this.cordova.getActivity().getCacheDir());
+            PdBase.openPatch(patchFile);
+        } catch (IOException e) {
+            Log.e("File error: ", e.toString());
+        }
+
 }
 
 
 @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+
+        Log.i("initialize: ", "shit.");
         super.initialize(cordova, webView);
         this.initPd();
-        PdBase.computeAudio(true);
+        PdAudio.startAudio(this.cordova.getActivity());
     }
 
 @Override
 public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
     throws JSONException {
+        Log.i("execute: ", "shit.");
         callback = callbackContext;
         if(action.equals("sendBang"))
         {
