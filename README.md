@@ -61,8 +61,8 @@ other abstractions or folders, look at the [declare] object.
 ## Changing Audio Settings
 To change things like sample rate, input channels, etc. look at the PdPlugin.m 
 or PdPlugin.java code in the plugin's intitialize method.  You will see 
-how the plugin sets these at compile.  Right now there is no interface 
-to change these any other way.
+how the plugin sets these. Just change whatever settings you need.
+Right now there is no interface to change these any other way.
 
 ## Instructions for Android 
 
