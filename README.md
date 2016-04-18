@@ -58,6 +58,12 @@ To add any custom externals you need to follow the libpd protocol here:
 Your main patch needs to be called cordova.pd and located in the root /www folder.  You can use
 other abstractions or folders, look at the [declare] object.
 
+## Changing Audio Settings
+To change things like sample rate, input channels, etc. look at the PdPlugin.m 
+or PdPlugin.java code in the plugin's intitialize method.  You will see 
+how the plugin sets these at compile.  Right now there is no interface 
+to change these any other way.
+
 ## Instructions for Android 
 
 The Android version is still in development.  It will run as of now but still in a testing phase. 
