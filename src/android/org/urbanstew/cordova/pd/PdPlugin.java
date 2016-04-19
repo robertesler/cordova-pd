@@ -127,12 +127,12 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
         }
         if(action.equals("sendFloat"))
         {
-            this.sendFloat(args.getString(0), args.getDouble(0));
+            this.sendFloat(args.getString(0), args.getDouble(1));
             return true;
         }
         if(action.equals("sendList"))
         {
-            this.sendList(args.getString(0), args.getJSONObject(0));
+            this.sendList(args.getString(0), args.getJSONObject(1));
             return true;
         }
         if(action.equals("sendSymbol"))
@@ -142,7 +142,7 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
         }
         if(action.equals("sendMessage"))
         {
-            this.sendMessage(args.getString(0), args.getString(1), args.getJSONObject(0));
+            this.sendMessage(args.getString(0), args.getString(1), args.getJSONObject(2));
             return true;
         }
 
