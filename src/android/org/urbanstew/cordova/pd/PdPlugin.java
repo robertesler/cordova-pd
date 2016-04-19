@@ -83,7 +83,6 @@ public class PdPlugin extends CordovaPlugin {
 	
 /* this is how we initialize Pd */
 private void initPd() {
-        Log.i("initPd", " shit.");
         PdBase.setReceiver(receiver);
         AudioParameters.init(this.cordova.getActivity());
         int srate = Math.max(44100, AudioParameters.suggestSampleRate());
@@ -109,7 +108,6 @@ private void initPd() {
 @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 
-        Log.i("initialize: ", "shit.");
         super.initialize(cordova, webView);
         this.initPd();
         PdAudio.startAudio(this.cordova.getActivity());
@@ -118,7 +116,7 @@ private void initPd() {
 @Override
 public boolean execute(String action, JSONArray args, CallbackContext callbackContext)
     throws JSONException {
-        Log.i("execute: ", "shit.");
+
         callback = callbackContext;
         if(action.equals("sendBang"))
         {
@@ -196,7 +194,7 @@ public void onDestroy() {
     }
     
     private void sendFloat(String receiveName, double f) {
-        PdBase.sendFloat(receiveName, (float)f);
+        PdBase.sendFloat(receiveName, (float) f);
     }
     
     private void sendList(String receiveName, Object ... args) {
@@ -225,21 +223,28 @@ public void onDestroy() {
 
     private void cordovaReceiveList(String sendName) {
         PdBase.subscribe(sendName);
-		JSONArray list = null;
-		try {
-			list = new JSONArray(theList);
+		//JSONArray list;
+        try {
+            JSONArray list = new JSONArray(theList);
+            this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+                    list));
 		}
 		catch(JSONException j) {
 			Log.w("Idiot, it don't work: ", j);
 		}	
-        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-        list));
+
     }
 
     private void cordovaReceiveMessage(String sendName) {
         PdBase.subscribe(sendName);
+        final StringBuffer buffer = new StringBuffer();
+        buffer.append(theMessage);
+        for(final String s : theMessageArguments) {
+            buffer.append(" ");
+            buffer.append(s);
+        }
         this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-        theMessage));
+        buffer.toString()));
     }
 
     private void cordovaReceiveSymbol(String sendName) {
