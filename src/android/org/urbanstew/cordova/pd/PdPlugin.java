@@ -1,5 +1,5 @@
 /*
-Android plugin for libpd and cordova.  It's a bunch of shit right now...
+Android plugin for libpd and cordova.
 */
 package org.urbanstew.cordova.pd;
 
