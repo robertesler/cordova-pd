@@ -17,10 +17,10 @@
 @property (nonatomic, retain) PdAudioController *audioController;
 @property (nonatomic, assign) double theFloat;
 @property (nonatomic, assign) BOOL theBang;
-@property (nonatomic, assign) NSString *theString;
-@property (nonatomic, assign) NSArray *theList;
-@property (nonatomic, assign) NSString *theMessage;
-@property (nonatomic, assign) NSArray *theArguments; //from theMessage
+@property (nonatomic, copy) NSString *theString;
+@property (nonatomic, copy) NSArray *theList;
+@property (nonatomic, copy) NSString *theMessage;
+@property (nonatomic, copy) NSArray *theArguments; //from theMessage
 - (void)sendFloat:(CDVInvokedUrlCommand*)command;
 - (void)sendMessage: (CDVInvokedUrlCommand* )command;
 - (void)sendBang: (CDVInvokedUrlCommand *)command;

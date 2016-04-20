@@ -94,7 +94,7 @@
     
     NSString* receiveName = [command.arguments objectAtIndex:0];
     NSArray* list = [command.arguments objectAtIndex:1];
-    
+  //  NSLog(@"List: %@\n", list);
     [PdBase sendList:list toReceiver:receiveName];
     
 }
@@ -144,7 +144,7 @@
     [PdBase setDelegate:self];
     [PdBase subscribe:theSend];
     [dispatcher addListener:self forSource:theSend];
-    
+   
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:theString];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
@@ -177,8 +177,8 @@
     
     NSArray *theMessageWithArguments;
     theMessageWithArguments = [NSArray arrayWithObjects:theMessage, theArguments, nil];
-    
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsMultipart:theMessageWithArguments];
+    NSString *fullMessage = [[theMessageWithArguments valueForKey:@"description"] componentsJoinedByString:@" "];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:fullMessage];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 
 }
@@ -215,10 +215,12 @@
 }
 
 - (void)receiveList:(NSArray *)list fromSource:(NSString *)source {
+    
     theList = list;
 }
 
 - (void) receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
+   
     theMessage = message;
     theArguments = arguments;
 }

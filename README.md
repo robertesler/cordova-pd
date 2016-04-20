@@ -58,11 +58,16 @@ To add any custom externals you need to follow the libpd protocol here:
 Your main patch needs to be called cordova.pd and located in the root /www folder.  You can use
 other abstractions or folders, look at the [declare] object.
 
-## Changing Audio Settings
-To change things like sample rate, input channels, etc. look at the PdPlugin.m 
-or PdPlugin.java code in the plugin's intitialize method.  You will see 
-how the plugin sets these. Just change whatever settings you need.
-Right now there is no interface to change these any other way.
+## Passing and Receiving Data 
+In general you should try to only pass data to Pd and not rely too much on receiving data from Pd.  
+This is in part because it can be slow, and unreliable.  But if you do need to get data from Pd then
+make sure it is not data that needs to be handled quickly. 
+
+Lists: I have been using Pd for the better part of 15 years and I have never used a formal list.  
+That being said, libpd has a sendList and receiveList API.  It’s weird at best.  I can’t get iOS to 
+“understand” my lists.  Android sends them fine but in JSON format.  I don’t know what the 
+difference would be to send a message like “list my stuff, and more stuff”.  So, my point is
+don’t use lists, use messages.
 
 ## Instructions for Android 
 
@@ -131,7 +136,7 @@ Send a message to a receiver
 ```
 $puredata.sendMessage("receiveName", message, argumentList)
 ```
-Send a list to a receiver
+Send a list to a receiver (not currently working in iOS, see note above.)
 ```
 $puredata.sendList("receiveName", list)
 ```
@@ -146,15 +151,15 @@ Receive a float from a sender (returns a float)
 ```
 $puredata.receiveFloat("sendName")
 ```
-Receive a symbol from a sender (returns a String or JSON)
+Receive a symbol from a sender (returns a String)
 ```
 $puredata.receiveSymbol("sendName")
 ```
-Receive a message from a sender (returns a String or JSON)
+Receive a message from a sender (returns a String)
 ```
 $puredata.receiveMessage("sendName")
 ```
-Receive a List to a sender (returns an array or JSON array)
+Receive a List to a sender (returns a JSON)
 ```
 $puredata.receiveList("sendName")
 ```
