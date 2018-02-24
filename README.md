@@ -11,12 +11,14 @@ I assume the following:
 
 To clone the repository to the root plugins folder try:
 ```
+cordova plugin add org.urbanstew.cordova.pd 
+OR
 cordova plugin add https://github.com/robertesler/cordova-pd.git
 ```
 ## Instructions for iOS
-1) Make sure to add the plugin to your config.xml in your root folder by adding:
+1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="PdPlugin" value="PdPlugin" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.2-dev" />
 ```
 2) Then either add the iOS platform or try:
 ```
@@ -74,9 +76,9 @@ don’t use lists, use messages.
 The Android version is still in development.  It will run as of now but still in a testing phase. 
 Check in regularly for any updates.
 
-1) Make sure to add the plugin to your config.xml in your root folder by adding:
+1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="PdPlugin" value="PdPlugin" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.2-dev" />
 ```
 2) Then either add the android platform or try:
 ```
@@ -85,6 +87,12 @@ cordova prepare android
 The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When the plugin installs
 it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
 you plan to release both iOS and Android.  
+
+You may need to edit the PdPlugin.java file line: 
+```
+import com.ionicframework.starter.R
+```
+to reflect the package name of your app.  I found the package name in the /platforms/android/AndroidManifest.xml.  Change the name respectively and add the .R at the end. 
 
 ## Using ng-cordova-pd
 
