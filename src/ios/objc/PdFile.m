@@ -15,12 +15,13 @@
 
 @interface PdFile ()
 
-@property (nonatomic, retain) NSValue *fileReference;
+@property (nonatomic, strong) NSValue *fileReference;
 @property (nonatomic, assign) int dollarZero;
 @property (nonatomic, copy) NSString *baseName;
 @property (nonatomic, copy) NSString *pathName;
 
-- (void)openFile:(NSString *)baseName path:(NSString *)pathName;  // open a file with base and path names
+// open a file with base and path names
+- (void)openFile:(NSString *)baseName path:(NSString *)pathName;
 
 @end
 
@@ -35,10 +36,10 @@
 #pragma mark - Class Open method
 
 + (id)openFileNamed:(NSString *)baseName path:(NSString *)pathName {
-	PdFile *pdFile = [[self alloc] init] ;
+	PdFile *pdFile = [[self alloc] init];
 	if (pdFile) {
 		[pdFile openFile:baseName path:pathName];
-		if (![pdFile fileReference]) {
+		if (!pdFile.fileReference) {
 			return nil;
 		}
 	}
@@ -53,8 +54,6 @@
 	self.pathName = nil;
 	self.baseName = nil;
 	self.fileReference = nil;
-
-	//[super dealloc];
 }
 
 #pragma mark -
@@ -83,7 +82,7 @@
 }
 
 - (void)closeFile {
-	void *x = [self.fileReference pointerValue];
+	void *x = (self.fileReference).pointerValue;
 	if (x) {
 		[PdBase closeFile:x];
 		self.fileReference = nil;

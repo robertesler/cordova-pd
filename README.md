@@ -46,8 +46,6 @@ pure data (source)
 ```
 git clone git://git.code.sf.net/p/pure-data/pure-data
 ```
-I have updated the libpd Objective-C wrapper to include Automatic Reference Counting (ARC) with 
-this plugin. 
 
 You can of course build your project manually cloning libpd yourself.  You would just need the 
 PdPlugin.m, PdPlugin.h files and cordova-pd.js file that comes with this distribution.
@@ -74,7 +72,7 @@ don’t use lists, use messages.
 ## Instructions for Android 
 
 The Android version is still in development.  It will run as of now but still in a testing phase. 
-Check in regularly for any updates.
+Check in regularly for any updates.  
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
@@ -97,7 +95,8 @@ to reflect the package name of your app.  I found the package name in the /platf
 ## Using ng-cordova-pd
 
 The Angular JS wrapper for this plugin allows you to use cordova-pd in Ionic
-projects and any other projects that use Angular JS.  
+projects and any other projects that use Angular JS.  Currently, the plugin only supports Angular JS version 1, not the newer version 2 or Angular.io.
+However, if you have a good example of using this plugin with Angular.io I will accept pull requests.  
 
 To use the plugin add ng-cordova-pd.js to your root /www/js and  to your index.html:
 ```

@@ -31,7 +31,7 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
  * THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Updated 2013 Dan Wilcox (danomatika@gmail.com)
+ * Updated 2013 Dan Wilcox <danomatika@gmail.com>
  *
  */
 
@@ -53,7 +53,6 @@
 - (void)receivePrint:(NSString *)message;
 @end
 
-
 /// Listener interface for MIDI from Pd.
 @protocol PdMidiListener<NSObject>
 @optional
@@ -65,13 +64,11 @@
 - (void)receivePolyAftertouch:(int)value forPitch:(int)pitch forChannel:(int)channel;
 @end
 
-
 /// Receiver interface for MIDI messages from Pd.
 @protocol PdMidiReceiverDelegate<PdMidiListener>
 @optional
 - (void)receiveMidiByte:(int)byte forPort:(int)port;
 @end
-
 
 @interface PdBase : NSObject {
   // Not meant to be instantiated. No member variables.

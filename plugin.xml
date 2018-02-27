@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- Copyright 2016 Robert Esler
+ Copyright 2018 Robert Esler
  
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -65,27 +65,12 @@
             </feature>
         </config-file>
         
+        <!-- cordova pd files -->
         <header-file src="src/ios/PdPlugin.h" />
         <source-file src="src/ios/PdPlugin.m" />
-        <!-- Objective-C wrapper -->
-        
-        <header-file src="src/ios/objc/AudioHelpers.h" />
-        <source-file src="src/ios/objc/AudioHelpers.m" />
-        <header-file src="src/ios/objc/PdAudioController.h" />
-        <source-file src="src/ios/objc/PdAudioController.m" />
-        <header-file src="src/ios/objc/PdAudioUnit.h" />
-        <source-file src="src/ios/objc/PdAudioUnit.m" />
-        <header-file src="src/ios/objc/PdBase.h" />
-        <source-file src="src/ios/objc/PdBase.m" />
-        <header-file src="src/ios/objc/PdDispatcher.h" />
-        <source-file src="src/ios/objc/PdDispatcher.m" />
-        <header-file src="src/ios/objc/PdFile.h" />
-        <source-file src="src/ios/objc/PdFile.m" />
-        <header-file src="src/ios/objc/PdMidiDispatcher.h" />
-        <source-file src="src/ios/objc/PdMidiDispatcher.m" />
         
         <!-- libpd.a: pure data and libpd_wrapper archive -->
-        <source-file src="src/ios/libpd.a" framework="true" compiler-flags="-DPD -DUSEAPI_DUMMY -DLIBPD_EXTRA" />
+        <source-file src="src/ios/libpd-ios.a" framework="true" compiler-flags="-DPD -DUSEAPI_DUMMY -DLIBPD_EXTRA" />
         
     </platform>
     
@@ -99,7 +84,7 @@
         
         <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java"
         target-dir="src/org/urbanstew/cordova/pd"/>
-        <resource-file src="libs/pd-core-1.0.1.aar" target="libs/pd-core-1.0.1.aar" />
+        <resource-file src="libs/pd-core-1.0.2.aar" target="libs/pd-core-1.0.2.aar" />
         <resource-file src="www/cordova.pd" target="res/raw/cordova.pd" />
         <framework src="pd.gradle" custom="true" type="gradleReference" />
         

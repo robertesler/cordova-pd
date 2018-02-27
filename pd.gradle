@@ -1,12 +1,11 @@
 repositories{    
   jcenter()
-  flatDir{
-      dirs 'libs'
-   }
+  flatDir dirs: ["libs", "src/main/libs"]
+  
 }
 
 dependencies {
-   compile(name:'pd-core-1.0.1', ext:'aar')
+   compile(name:'pd-core-1.0.2', ext:'aar')
 }
 
 android {

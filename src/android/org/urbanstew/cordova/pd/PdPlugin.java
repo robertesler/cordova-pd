@@ -9,7 +9,9 @@ import android.util.Log;
 import java.io.InputStream;
 import android.content.res.Resources;
 
-import com.ionicframework.starter.R;
+//You may need to change this to your package name if it differs from this
+//You can find it in AndroidManifest.xml most likely
+import io.ionic.starter.R;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
