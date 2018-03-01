@@ -34,6 +34,7 @@ cordova prepare ios
 5) Build your application using Xcode.  The cordova build option does not currently work when
   linking the static library.
 
+6) If you want to test in the simulator see the REAME.md file in the x86_64 folder.
 #NOTE:
 
  This project uses dependencies that are maintained by other developers.  These include:
