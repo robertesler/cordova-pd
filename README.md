@@ -89,7 +89,7 @@ you plan to release both iOS and Android.
 
 You may need to edit the PdPlugin.java file line: 
 ```
-import com.ionicframework.starter.R
+import io.ionic.starter.R
 ```
 to reflect the package name of your app.  I found the package name in the /platforms/android/AndroidManifest.xml.  Change the name respectively and add the .R at the end. 
 
@@ -174,7 +174,7 @@ Receive a message from a sender (returns a String)
 ```
 window.plugins.pd.receiveMessage("sendName")
 ```
-Receive a List to a sender (returns a JSON)
+Receive a List from a sender (returns a JSON)
 ```
 window.plugins.pd.receiveList("sendName")
 ```

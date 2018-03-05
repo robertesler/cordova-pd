@@ -1,19 +1,24 @@
 /*
  
- Copyright 2016 Robert Esler
+ Copyright 2018 Robert Esler
  
  These functions should send or recieve all data types from Pd (bang, float, message, symbol, and lists).
  There may be some latency, which may be improved at a later date.  If that is an issue then consider using
  the libpd native APIs.
  
  */
-"use strict";
+//"use strict";
+
+var exec = require('exec');
+var cordova = require('cordova');
 
 function Pd() {
     
 }
 
-    
+//In plain JS, use this syntax window.plugins.pd.sendFloat("receiveName", float); 
+//If using Typescript use this syntax (<any>window).plugins.pd.sendFloat("receiveName", float); 
+
 Pd.prototype.sendFloat = function (receiveName, float, success, fail) {
     return cordova.exec(success, fail, "PdPlugin", "sendFloat", [receiveName, float]);
 };
@@ -64,6 +69,10 @@ Pd.prototype.echo = function(str, callback, fail) {
     cordova.exec(callback, fail, "PdPlugin", "test", [str]);
 };
 
+module.exports = new Pd();
+
+/*
+// This is old javascript, leaving it incase anything breaks.
 Pd.install = function () {
     if (!window.plugins) {
         window.plugins = {};
@@ -74,5 +83,5 @@ Pd.install = function () {
 };
 
 cordova.addConstructor(Pd.install);
-    
+  */  
 
