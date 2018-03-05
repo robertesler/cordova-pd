@@ -124,50 +124,57 @@ Make sure to wrap your plugin function calls in ```$ionicPlatform.ready()``` and
 to use the ```.then()``` method.  This is especially if you are trying to receive
 data from Pd.  
 
+## Typescript and Ionic 2
+  It appears that Ionic 2 is relying heavily on typescript.  To interface with this plugin directly in typescript use this syntax:
+  ```
+(<any>window).plugins.pd.sendBang("receiveName")
+```
+Just replace the 'sendBang' portion with the appropriate method.
+
 ## API
 
 ###Sending Data to Pd
 
 Send a bang to a receiver
 ```
-$puredata.sendBang("receiveName")
+window.plugins.pd.sendBang("receiveName")
 ```
 Send a float to a receiver
 ```
-$puredata.sendFloat("receiveName", float)
+window.plugins.pd.sendFloat("receiveName", float)
 ```
 Send a symbol to a receiver
 ```
-$puredata.sendSymbol("receiveName", symbol)
+window.plugins.pd.sendSymbol("receiveName", symbol)
 ```
 Send a message to a receiver
 ```
-$puredata.sendMessage("receiveName", message, argumentList)
+window.plugins.pd.sendMessage("receiveName", message, argumentList)
 ```
 Send a list to a receiver (not currently working in iOS, see note above.)
 ```
-$puredata.sendList("receiveName", list)
+window.plugins.pd.sendList("receiveName", list)
 ```
 
 ###Receiving Data from Pd
 
 Receive a bang from a sender (returns a bool set as true)
 ```
-$puredata.receiveBang("sendName")
+window.plugins.pd.receiveBang("sendName")
 ```
 Receive a float from a sender (returns a float)
 ```
-$puredata.receiveFloat("sendName")
+window.plugins.pd.receiveFloat("sendName")
 ```
 Receive a symbol from a sender (returns a String)
 ```
-$puredata.receiveSymbol("sendName")
+window.plugins.pd.receiveSymbol("sendName")
 ```
 Receive a message from a sender (returns a String)
 ```
-$puredata.receiveMessage("sendName")
+window.plugins.pd.receiveMessage("sendName")
 ```
 Receive a List to a sender (returns a JSON)
 ```
-$puredata.receiveList("sendName")
+window.plugins.pd.receiveList("sendName")
 ```
