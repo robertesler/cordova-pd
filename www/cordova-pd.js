@@ -9,8 +9,7 @@
  */
 //"use strict";
 
-var exec = require('exec');
-var cordova = require('cordova');
+var exec = require('cordova/exec');
 
 function Pd() {
     
@@ -20,53 +19,53 @@ function Pd() {
 //If using Typescript use this syntax (<any>window).plugins.pd.sendFloat("receiveName", float); 
 
 Pd.prototype.sendFloat = function (receiveName, float, success, fail) {
-    return cordova.exec(success, fail, "PdPlugin", "sendFloat", [receiveName, float]);
+    return exec(success, fail, "PdPlugin", "sendFloat", [receiveName, float]);
 };
     
 Pd.prototype.sendMessage = function (receiveName, message, list, success, fail) {
-    return cordova.exec(success, fail, "PdPlugin", "sendMessage", [receiveName, message, list]);
+    return exec(success, fail, "PdPlugin", "sendMessage", [receiveName, message, list]);
 };
     
 Pd.prototype.sendBang = function (receiveName, success, fail) {
-    return cordova.exec(success, fail, "PdPlugin", "sendBang", [receiveName]);
+    return exec(success, fail, "PdPlugin", "sendBang", [receiveName]);
     
 };
     
 Pd.prototype.sendSymbol = function (receiveName, symbol, success, fail) {
-    return cordova.exec(success, fail, "PdPlugin", "sendSymbol", [receiveName, symbol]);
+    return exec(success, fail, "PdPlugin", "sendSymbol", [receiveName, symbol]);
 };
     
 Pd.prototype.sendList = function (receiveName, list, success, fail) {
-    return cordova.exec(success, fail, "PdPlugin", "sendList", [receiveName, list]);
+    return exec(success, fail, "PdPlugin", "sendList", [receiveName, list]);
 };
     
 Pd.prototype.receiveBang = function (sendName, success, fail) {
-    cordova.exec(success, fail, "PdPlugin", "cordovaReceiveBang", [sendName]);
+    exec(success, fail, "PdPlugin", "cordovaReceiveBang", [sendName]);
     
 };
     
 Pd.prototype.receiveFloat = function (sendName, success, fail) {
-    cordova.exec(success, fail, "PdPlugin", "cordovaReceiveFloat", [sendName]);
+    exec(success, fail, "PdPlugin", "cordovaReceiveFloat", [sendName]);
     
 };
     
 Pd.prototype.receiveSymbol = function (sendName, success, fail) {
-    cordova.exec(success, fail, "PdPlugin", "cordovaReceiveSymbol", [sendName]);
+    exec(success, fail, "PdPlugin", "cordovaReceiveSymbol", [sendName]);
     
 };
     
 Pd.prototype.receiveList = function (sendName, success, fail) {
-    cordova.exec(success, fail, "PdPlugin", "cordovaReceiveList", [sendName]);
+    exec(success, fail, "PdPlugin", "cordovaReceiveList", [sendName]);
     
 };
     
 Pd.prototype.receiveMessage = function (sendName, success, fail) {
-    cordova.exec(success, fail, "PdPlugin", "cordovaReceiveMessage", [sendName]);
+    exec(success, fail, "PdPlugin", "cordovaReceiveMessage", [sendName]);
     
 };
     
 Pd.prototype.echo = function(str, callback, fail) {
-    cordova.exec(callback, fail, "PdPlugin", "test", [str]);
+    exec(callback, fail, "PdPlugin", "test", [str]);
 };
 
 module.exports = new Pd();

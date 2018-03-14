@@ -85,7 +85,7 @@
         <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java"
         target-dir="src/org/urbanstew/cordova/pd"/>
         <resource-file src="libs/pd-core-1.0.2.aar" target="libs/pd-core-1.0.2.aar" />
-        <resource-file src="www/cordova.pd" target="res/raw/cordova.pd" />
+        <resource-file src="www/cordova.zip" target="res/raw/cordova.zip" />
         <framework src="pd.gradle" custom="true" type="gradleReference" />
         
     </platform>
