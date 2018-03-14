@@ -97,15 +97,17 @@ private void initPd() {
         Resources res = this.cordova.getActivity().getResources();
         File patchFile = null;
         try {
+/*
                 File dir = this.cordova.getActivity().getFilesDir();
                 patchFile = new File(dir, "cordova.pd");
                 IoUtils.extractZipResource(res.openRawResource(R.raw.cordova), dir, true);
                 PdBase.openPatch(patchFile.getAbsolutePath());
-            /*
+ */
+
             InputStream in = res.openRawResource(R.raw.cordova);
             patchFile = IoUtils.extractResource(in, "cordova.pd", this.cordova.getActivity().getCacheDir());
             PdBase.openPatch(patchFile);
-             */
+             
         } catch (IOException e) {
             Log.e("File error: ", e.toString());
         }

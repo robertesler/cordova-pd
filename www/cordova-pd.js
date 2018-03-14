@@ -9,8 +9,8 @@
  */
 //"use strict";
 
-var exec = require('cordova/exec');
-
+var exec = require('exec');
+var cordova = require('cordova');
 function Pd() {
     
 }
