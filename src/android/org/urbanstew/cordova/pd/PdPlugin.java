@@ -97,13 +97,16 @@ private void initPd() {
         Resources res = this.cordova.getActivity().getResources();
         File patchFile = null;
         try {
+                /*the following bit is experimental.  If you need to link abstractions it seems like using
+                 the IoUtils.extractZipResources() properly links the paths to your externals/abstractions etc.*/
 /*
                 File dir = this.cordova.getActivity().getFilesDir();
-                patchFile = new File(dir, "cordova.pd");
-                IoUtils.extractZipResource(res.openRawResource(R.raw.cordova), dir, true);
+                patchFile = new File(dir, "cordova.pd");//your main patch, you can change the name
+                IoUtils.extractZipResource(res.openRawResource(R.raw.cordova), dir, true);//make sure your zip is called cordova.zip
                 PdBase.openPatch(patchFile.getAbsolutePath());
  */
-
+            /*if you are using more than one patch or external comment the following lines out 
+             and uncomment the above.*/
             InputStream in = res.openRawResource(R.raw.cordova);
             patchFile = IoUtils.extractResource(in, "cordova.pd", this.cordova.getActivity().getCacheDir());
             PdBase.openPatch(patchFile);

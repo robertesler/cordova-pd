@@ -18,7 +18,7 @@ cordova plugin add https://github.com/robertesler/cordova-pd.git
 ## Instructions for iOS
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.2-dev" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.7" />
 ```
 2) Then either add the iOS platform or try:
 ```
@@ -34,7 +34,9 @@ cordova prepare ios
 5) Build your application using Xcode.  The cordova build option does not currently work when
   linking the static library.
 
-6) If you want to test in the simulator see the REAME.md file in the x86_64 folder.
+6) Put your pd patches in the root Xcode project folder (the one with the project file) and copy your patches to the project's Resource folder in Xcode.
+
+7) If you want to test in the simulator see the REAME.md file in the x86_64 folder.
 #NOTE:
 
  This project uses dependencies that are maintained by other developers.  These include:
@@ -86,6 +88,8 @@ cordova prepare android
 The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When the plugin installs
 it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
 you plan to release both iOS and Android.  
+
+If you need to use abstractions or externals look at the commented out code in the PdPlugin.java and alter it accordingly.  It seems to work if the patches are .zip then extracted by Android.
 
 You may need to edit the PdPlugin.java file line: 
 ```

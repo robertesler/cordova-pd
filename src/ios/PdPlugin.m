@@ -35,7 +35,7 @@
         NSLog(@"Audio Configuration successful.");
     }
     
-    [PdBase openFile:@"/www/cordova.pd" path:[[NSBundle mainBundle] bundlePath] ];
+    [PdBase openFile:@"cordova.pd" path:[[NSBundle mainBundle] bundlePath] ];
      // was [PdBase openFile:@"test.pd" path:[[NSBundle mainBundle] resourcePath]];
     
     [self.audioController setActive:YES];
