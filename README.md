@@ -66,11 +66,7 @@ In general you should try to only pass data to Pd and not rely too much on recei
 This is in part because it can be slow, and unreliable.  But if you do need to get data from Pd then
 make sure it is not data that needs to be handled quickly. 
 
-Lists: I have been using Pd for the better part of 15 years and I have never used a formal list.  
-That being said, libpd has a sendList and receiveList API.  It’s weird at best.  I can’t get iOS to 
-“understand” my lists.  Android sends them fine but in JSON format.  I don’t know what the 
-difference would be to send a message like “list my stuff, and more stuff”.  So, my point is
-don’t use lists, use messages.
+Messages and Lists:  Right now the API for these is still not fully tested. Since libpd type checks every argument or every element of a message or list it is very slow.
 
 ## Instructions for Android 
 
@@ -151,11 +147,11 @@ Send a symbol to a receiver
 ```
 window.plugins.pd.sendSymbol("receiveName", symbol)
 ```
-Send a message to a receiver
+Send a message to a receiver, make sure your arguments are a single string '1 2 3'
 ```
 window.plugins.pd.sendMessage("receiveName", message, argumentList)
 ```
-Send a list to a receiver (not currently working in iOS, see note above.)
+Send a list to a receiver, make sure your list is a single string '1 2 3'
 ```
 window.plugins.pd.sendList("receiveName", list)
 ```

@@ -34,6 +34,9 @@
     } else {
         NSLog(@"Audio Configuration successful.");
     }
+    //This prints the Pd Log to the Xcode console view
+    dispatcher = [[PdDispatcher alloc] init];
+    [PdBase setDelegate:dispatcher];
     
     [PdBase openFile:@"cordova.pd" path:[[NSBundle mainBundle] bundlePath] ];
      // was [PdBase openFile:@"test.pd" path:[[NSBundle mainBundle] resourcePath]];
@@ -66,7 +69,10 @@
 {
     NSString* receiveName = [command.arguments objectAtIndex:0];
     NSString* message = [command.arguments objectAtIndex:1];
-    NSArray* list = [command.arguments objectAtIndex:2];
+    NSString* args = [command.arguments objectAtIndex:2];
+    //separate the arguments with whitespace, send them to Pd and Pd deals with them
+    NSArray* list = [args componentsSeparatedByString:@" "];
+    //    NSLog(@"%@", list[0]);
     
     [PdBase sendMessage:message withArguments:list toReceiver:receiveName];
     
@@ -93,8 +99,10 @@
 - (void)sendList:(CDVInvokedUrlCommand *)command {
     
     NSString* receiveName = [command.arguments objectAtIndex:0];
-    NSArray* list = [command.arguments objectAtIndex:1];
-  //  NSLog(@"List: %@\n", list);
+    NSString* args = [command.arguments objectAtIndex:1];
+    //separate the arguments with whitespace, send them to Pd and Pd deals with them
+    NSArray* list = [args componentsSeparatedByString:@" "];
+    //  NSLog(@"List: %@\n", list);
     [PdBase sendList:list toReceiver:receiveName];
     
 }

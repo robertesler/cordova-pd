@@ -21,9 +21,9 @@ function Pd() {
 Pd.prototype.sendFloat = function (receiveName, float, success, fail) {
     return cordova.exec(success, fail, "PdPlugin", "sendFloat", [receiveName, float]);
 };
-    
-Pd.prototype.sendMessage = function (receiveName, message, list, success, fail) {
-    return cordova.exec(success, fail, "PdPlugin", "sendMessage", [receiveName, message, list]);
+    //format your args as a string, ex. '1 2 3'
+Pd.prototype.sendMessage = function (receiveName, message, args, success, fail) {
+    return cordova.exec(success, fail, "PdPlugin", "sendMessage", [receiveName, message, args]);
 };
     
 Pd.prototype.sendBang = function (receiveName, success, fail) {
@@ -34,7 +34,7 @@ Pd.prototype.sendBang = function (receiveName, success, fail) {
 Pd.prototype.sendSymbol = function (receiveName, symbol, success, fail) {
     return cordova.exec(success, fail, "PdPlugin", "sendSymbol", [receiveName, symbol]);
 };
-    
+    //format your list as a string, ex '3 4 5'   
 Pd.prototype.sendList = function (receiveName, list, success, fail) {
     return cordova.exec(success, fail, "PdPlugin", "sendList", [receiveName, list]);
 };

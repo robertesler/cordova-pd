@@ -143,7 +143,13 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
         }
         if(action.equals("sendList"))
         {
-            this.sendList(args.getString(0), args.getJSONObject(1));
+            //send lists as a single string
+            String listArgs = args.getString(2);
+            String delims = "[ ]+";
+            String[] tokens = listArgs.split(delims);
+            Object[] toLibpd = new Object[tokens.length];
+            toLibpd = tokens.clone();
+            this.sendList(args.getString(0), toLibpd);
             return true;
         }
         if(action.equals("sendSymbol"))
@@ -153,7 +159,13 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
         }
         if(action.equals("sendMessage"))
         {
-            this.sendMessage(args.getString(0), args.getString(1), args.getJSONObject(2));
+            //send message args as a single string
+            String messageArgs = args.getString(2);
+            String delims = "[ ]+";
+            String[] tokens = messageArgs.split(delims);
+            Object[] toLibpd = new Object[tokens.length];
+            toLibpd = tokens.clone();
+            this.sendMessage(args.getString(0), args.getString(1), toLibpd);
             return true;
         }
 

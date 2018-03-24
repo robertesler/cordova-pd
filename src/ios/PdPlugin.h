@@ -11,7 +11,7 @@
 #import "PdFile.h"
 
 @interface PdPlugin : CDVPlugin<PdListener, PdReceiverDelegate> {
-
+PdDispatcher *dispatcher;
 }
 
 @property (nonatomic, retain) PdAudioController *audioController;
