@@ -8,6 +8,7 @@ import java.io.IOException;
 import android.util.Log;
 import java.io.InputStream;
 import android.content.res.Resources;
+import android.text.TextUtils;
 
 //You may need to change this to your package name if it differs from this
 //You can find it in AndroidManifest.xml most likely
@@ -143,12 +144,25 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
         }
         if(action.equals("sendList"))
         {
-            //send lists as a single string
-            String listArgs = args.getString(2);
+             //send message args as a single string
+            String messageArgs = args.getString(1);
             String delims = "[ ]+";
-            String[] tokens = listArgs.split(delims);
+            //split string into tokens separated by " "
+            String[] tokens = messageArgs.split(delims);
             Object[] toLibpd = new Object[tokens.length];
-            toLibpd = tokens.clone();
+            //type check then convert if necessary
+            for(int i = 0; i < tokens.length; i++)
+            {
+                if(TextUtils.isDigitsOnly(tokens[i]))
+                {
+                    toLibpd[i] = Float.parseFloat(tokens[i]);
+                }
+                else
+                {
+                    toLibpd[i] = tokens[i];
+                }
+            }
+            
             this.sendList(args.getString(0), toLibpd);
             return true;
         }
@@ -162,9 +176,22 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
             //send message args as a single string
             String messageArgs = args.getString(2);
             String delims = "[ ]+";
+            //split string into tokens separated by " "
             String[] tokens = messageArgs.split(delims);
             Object[] toLibpd = new Object[tokens.length];
-            toLibpd = tokens.clone();
+            //type check then convert if necessary
+            for(int i = 0; i < tokens.length; i++)
+            {
+                if(TextUtils.isDigitsOnly(tokens[i]))
+                {
+                    toLibpd[i] = Float.parseFloat(tokens[i]);
+                }
+                else
+                {
+                    toLibpd[i] = tokens[i];
+                }
+            }
+        
             this.sendMessage(args.getString(0), args.getString(1), toLibpd);
             return true;
         }

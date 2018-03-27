@@ -70,9 +70,25 @@
     NSString* receiveName = [command.arguments objectAtIndex:0];
     NSString* message = [command.arguments objectAtIndex:1];
     NSString* args = [command.arguments objectAtIndex:2];
-    //separate the arguments with whitespace, send them to Pd and Pd deals with them
-    NSArray* list = [args componentsSeparatedByString:@" "];
-    //    NSLog(@"%@", list[0]);
+    //separate the arguments with whitespace
+    NSArray* argList = [args componentsSeparatedByString:@" "];
+    NSMutableArray* list = [[NSMutableArray alloc] init];//list we send to libpd
+    NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    
+    //type check each argument
+    for (NSString* tokens in argList)
+    {
+        if ([tokens rangeOfCharacterFromSet:notDigits].location == NSNotFound)
+        {
+            //String is probably a number
+            float f = [tokens floatValue];
+            NSNumber* n = @(f);
+            //  NSLog(@"%@", n);
+            [list addObject:n];
+        }
+        else //nope it's a string
+            [list addObject:tokens];
+    }
     
     [PdBase sendMessage:message withArguments:list toReceiver:receiveName];
     
@@ -100,9 +116,26 @@
     
     NSString* receiveName = [command.arguments objectAtIndex:0];
     NSString* args = [command.arguments objectAtIndex:1];
-    //separate the arguments with whitespace, send them to Pd and Pd deals with them
-    NSArray* list = [args componentsSeparatedByString:@" "];
-    //  NSLog(@"List: %@\n", list);
+    //separate the arguments with whitespace
+    NSArray* argList = [args componentsSeparatedByString:@" "];
+    NSMutableArray* list = [[NSMutableArray alloc] init];//list we send to libpd
+    NSCharacterSet* notDigits = [[NSCharacterSet decimalDigitCharacterSet] invertedSet];
+    
+    //type check each argument
+    for (NSString* tokens in argList)
+    {
+        if ([tokens rangeOfCharacterFromSet:notDigits].location == NSNotFound)
+        {
+            //String is probably a number
+            float f = [tokens floatValue];
+            NSNumber* n = @(f);
+            //  NSLog(@"%@", n);
+            [list addObject:n];
+        }
+        else //nope it's a string
+            [list addObject:tokens];
+    }
+    
     [PdBase sendList:list toReceiver:receiveName];
     
 }
