@@ -1,5 +1,6 @@
 # UPDATE
-In the coming weeks, as of June 2020, I plan to update to the most current libpd package.  You can of course do this manually if you like, but you would need to know a little bit about how a cordova plugin works.  Also, there is some odd behavior I am trying to track, especially how cordova copies files to the platforms.  Right now on Android, I cannot edit a master .pd file and just let cordova copy it to the right places.  Instead I have to edit it manually in each platform location.  Annoying.  So I will try to get to the bottom that too. 
+I have updated as of June 30, 2020 to the most recent libpd package for Android.  Still working on iOS.  You can of course do this manually if you like, but you would need to know a little bit about how a cordova plugin works.  Also, there is some odd behavior I am trying to track, especially how cordova copies files to the platforms.  Right now on Android, I cannot edit a master .pd file and just let cordova copy it to the right places.  Instead I have to edit it manually in each platform location.  Annoying.  So I will try to get to the bottom that too.
+ 
 # Introduction
 This plugin is meant to unite the libpd and cordova frameworks so app developers can 
 also have the power of Pure Data for audio and music synthesis.  
@@ -20,7 +21,7 @@ cordova plugin add https://github.com/robertesler/cordova-pd.git
 ## Instructions for iOS
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.7" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.8" />
 ```
 2) Then either add the iOS platform or try:
 ```
@@ -77,7 +78,7 @@ Check in regularly for any updates.
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.2-dev" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.3" />
 ```
 2) Then either add the android platform or try:
 ```
