@@ -1,5 +1,5 @@
 # UPDATE
-I have updated as of June 30, 2020 to the most recent libpd package for Android.  Still working on iOS.  You can of course do this manually if you like, but you would need to know a little bit about how a cordova plugin works.  Also, there is some odd behavior I am trying to track, especially how cordova copies files to the platforms.  Right now on Android, I cannot edit a master .pd file and just let cordova copy it to the right places.  Instead I have to edit it manually in each platform location.  Annoying.  So I will try to get to the bottom that too.
+I have updated as of June 30, 2020 to the most recent libpd package for Android.  Still working on iOS.  You can of course do this manually if you like, but you would need to know a little bit about how a cordova plugin works.
  
 # Introduction
 This plugin is meant to unite the libpd and cordova frameworks so app developers can 
@@ -88,6 +88,14 @@ The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When t
 it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
 you plan to release both iOS and Android.  
 
+If you want cordova to copy your .pd file from /www you can now try uncommenting the line:
+```
+<hook type="before_prepare" src="scripts/copyPdFile.js" />
+```
+This should automatically update your patch for the Android build when you execute:
+```
+cordova prepare android
+```
 If you need to use abstractions or externals look at the commented out code in the PdPlugin.java and alter it accordingly.  It seems to work if the patches are .zip then extracted by Android.
 
 You may need to edit the PdPlugin.java file line: 
