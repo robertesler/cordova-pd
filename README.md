@@ -1,5 +1,5 @@
 # UPDATE
-I have updated as of June 30, 2020 to the most recent libpd package for Android.  Still working on iOS.  You can of course do this manually if you like, but you would need to know a little bit about how a cordova plugin works.
+I have updated as of April 1, 2022 to the most recent libpd package for iOS.  Still working on Android.  You can of course do this manually if you like, but you would need to know a little bit about how a cordova plugin works.
  
 # Introduction
 This plugin is meant to unite the libpd and cordova frameworks so app developers can 
@@ -19,6 +19,8 @@ OR
 cordova plugin add https://github.com/robertesler/cordova-pd.git
 ```
 ## Instructions for iOS
+Right now you can only use the library on an iOS device.  The iOS simulator seems to have changed how it handles static libraries.  I'm looking into it, but will not get to it anytime soon.  I've left the old static lib (libpd-ios-simulator.a) in the distribution in case it is useful. 
+
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
 <plugin name="org.urbanstew.cordova.pd" spec="0.0.8" />
