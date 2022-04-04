@@ -85,7 +85,7 @@
         
 	<!-- This is experimental for now, uncomment the line below if you want cordova to copy your .pd file
  		everytime you execute 'cordova prepare android' -->
-	<!-- <hook type="before_prepare" src="scripts/copyPdFile.js" /> -->
+	<hook type="before_prepare" src="scripts/copyPdFile.js" />
 
         <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java"
         target-dir="src/org/urbanstew/cordova/pd"/>
