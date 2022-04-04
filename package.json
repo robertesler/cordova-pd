@@ -1,6 +1,10 @@
 {
   "name": "org.urbanstew.cordova.pd",
+<<<<<<< HEAD
   "version": "0.0.7",
+=======
+  "version": "0.0.8",
+>>>>>>> 22d5d188cc54f061d155c4bda6267360062d4021
   "description": "\n        This plugin allows cordova users to use Pure Data patches in their apps\n         for music and audio processing through the libpd package.\n    ",
   "cordova": {
     "id": "org.urbanstew.cordova.pd",

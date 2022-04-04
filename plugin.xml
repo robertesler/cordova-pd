@@ -24,7 +24,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="org.urbanstew.cordova.pd"
-    version="0.0.2-dev">
+    version="0.0.4">
     
     <name>PdPlugin</name>
     
@@ -48,7 +48,7 @@
     <author>Robert Esler</author>
     
     <engines>
-        <engine name="cordova" version=">=3.0.0" />
+        <engine name="cordova" version=">=11.0.0" />
     </engines>
     
 	<js-module src="www/cordova-pd.js" name="PdPlugin">
@@ -74,6 +74,7 @@
         
     </platform>
     
+    <!-- android -->
     <platform name="android">
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="PdPlugin">
@@ -82,9 +83,13 @@
             </feature>
         </config-file>
         
+	<!-- This is experimental for now, uncomment the line below if you want cordova to copy your .pd file
+ 		everytime you execute 'cordova prepare android' -->
+	<!-- <hook type="before_prepare" src="scripts/copyPdFile.js" /> -->
+
         <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java"
         target-dir="src/org/urbanstew/cordova/pd"/>
-        <resource-file src="libs/pd-core-1.0.2.aar" target="libs/pd-core-1.0.2.aar" />
+        <resource-file src="libs/pd-core-1.0.3.aar" target="libs/pd-core-1.0.3.aar" />
         <resource-file src="www/cordova.pd" target="res/raw/cordova.pd" />
         <framework src="pd.gradle" custom="true" type="gradleReference" />
         

@@ -1,7 +1,7 @@
 android {
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 23
+        targetSdkVersion 30
     }
 
    packagingOptions {

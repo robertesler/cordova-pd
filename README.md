@@ -1,3 +1,6 @@
+# UPDATE
+I have updated as of April 1, 2022 to the most recent libpd package for iOS.  Still working on Android.  You can of course do this manually if you like, but you would need to know a little bit about how a cordova plugin works.
+ 
 # Introduction
 This plugin is meant to unite the libpd and cordova frameworks so app developers can 
 also have the power of Pure Data for audio and music synthesis.  
@@ -16,9 +19,11 @@ OR
 cordova plugin add https://github.com/robertesler/cordova-pd.git
 ```
 ## Instructions for iOS
+Right now you can only use the library on an iOS device.  The iOS simulator seems to have changed how it handles static libraries.  I'm looking into it, but will not get to it anytime soon.  I've left the old static lib (libpd-ios-simulator.a) in the distribution in case it is useful. 
+
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.7" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.8" />
 ```
 2) Then either add the iOS platform or try:
 ```
@@ -75,7 +80,7 @@ Check in regularly for any updates.
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.2-dev" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.3" />
 ```
 2) Then either add the android platform or try:
 ```
@@ -85,6 +90,14 @@ The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When t
 it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
 you plan to release both iOS and Android.  
 
+If you want cordova to copy your .pd file from /www you can now try uncommenting the line:
+```
+<hook type="before_prepare" src="scripts/copyPdFile.js" />
+```
+This should automatically update your patch for the Android build when you execute:
+```
+cordova prepare android
+```
 If you need to use abstractions or externals look at the commented out code in the PdPlugin.java and alter it accordingly.  It seems to work if the patches are .zip then extracted by Android.
 
 You may need to edit the PdPlugin.java file line: 
