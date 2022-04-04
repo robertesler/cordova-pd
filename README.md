@@ -102,11 +102,11 @@ If you need to use abstractions or externals look at the commented out code in t
 
 You may need to edit the PdPlugin.java file line: 
 ```
-import io.ionic.starter.R
+import io.cordova.hellocordova.R
 ```
-to reflect the package name of your app.  I found the package name in the /platforms/android/AndroidManifest.xml.  Change the name respectively and add the .R at the end. 
+to reflect the package name of your app.  I found the package name in the /platforms/android/android.json.  Change the name respectively and add the .R at the end. 
 
-## Using ng-cordova-pd
+## Using ng-cordova-pd (deprecated)
 
 The Angular JS wrapper for this plugin allows you to use cordova-pd in Ionic
 projects and any other projects that use Angular JS.  Currently, the plugin only supports Angular JS version 1, not the newer version 2 or Angular.io.
