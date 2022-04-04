@@ -1,5 +1,5 @@
 # UPDATE
-I have updated as of April 1, 2022 to the most recent libpd package for iOS.  Still working on Android.  You can of course do this manually if you like, but you would need to know a little bit about how a cordova plugin works.
+I have updated as of April 1, 2022 to the most recent libpd package for iOS and Android.  You can of course always update the libp packages manually if you like, but you would need to know a little bit about how a cordova plugin works.
  
 # Introduction
 This plugin is meant to unite the libpd and cordova frameworks so app developers can 
