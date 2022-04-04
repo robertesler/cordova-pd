@@ -11,8 +11,8 @@ import android.content.res.Resources;
 import android.text.TextUtils;
 
 //You may need to change this to your package name if it differs from this
-//You can find it in AndroidManifest.xml most likely
-import io.ionic.starter.R;
+//You can find it in AndroidManifest.xml or android.json most likely
+import io.cordova.hellocordova.R;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
