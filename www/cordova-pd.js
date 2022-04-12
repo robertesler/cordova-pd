@@ -65,7 +65,7 @@ Pd.prototype.receiveMessage = function (sendName, success, fail) {
 };
     
 Pd.prototype.echo = function(str, callback, fail) {
-    cordova.exec(callback, fail, "PdPlugin", "test", [str]);
+    cordova.exec(callback, fail, "PdPlugin", "echo", [str]);
 };
 
 //module.exports = new Pd();

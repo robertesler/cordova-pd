@@ -224,6 +224,21 @@
 
 }
 
+- (void)echo:(CDVInvokedUrlCommand *)command {
+    NSString* text = [command.arguments objectAtIndex:0];
+    NSLog(@"print: %@\n", text);
+    CDVPluginResult* pluginResult = nil;
+    
+   
+    
+    NSArray *theMessageWithArguments;
+    theMessageWithArguments = [NSArray arrayWithObjects:theMessage, theArguments, nil];
+    NSString *fullMessage = [[theMessageWithArguments valueForKey:@"description"] componentsJoinedByString:@" "];
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:fullMessage];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+}
+
 // this was just a test using the original Cordova format
 - (void)test:(CDVInvokedUrlCommand*)command
 {
