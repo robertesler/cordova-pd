@@ -31,5 +31,6 @@ PdDispatcher *dispatcher;
 - (void)cordovaReceiveSymbol:(CDVInvokedUrlCommand *)command;
 - (void)cordovaReceiveList:(CDVInvokedUrlCommand *)command;
 - (void)cordovaReceiveMessage:(CDVInvokedUrlCommand *)command;
+- (void)echo:(CDVInvokedUrlCommand*)command;
 - (void)test:(CDVInvokedUrlCommand*)command;
 @end
