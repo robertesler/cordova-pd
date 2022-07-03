@@ -174,6 +174,14 @@ window.plugins.pd.sendList("receiveName", list)
 Receive a bang from a sender (returns a bool set as true)
 ```
 window.plugins.pd.receiveBang("sendName")
+//example code for most receives from libpd:
+window.plugins.pd.receiveBang("sendName",
+function success(e) {
+ console.log(e);//this is the return value from Cordova
+},
+function fail() {
+ console.log("It failed.");
+});
 ```
 Receive a float from a sender (returns a float)
 ```
