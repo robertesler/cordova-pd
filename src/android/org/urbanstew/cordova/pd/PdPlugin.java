@@ -5,14 +5,18 @@ package org.urbanstew.cordova.pd;
 
 import java.io.File;
 import java.io.IOException;
+
 import android.util.Log;
 import java.io.InputStream;
 import android.content.res.Resources;
 import android.text.TextUtils;
+import java.util.HashMap;
+import java.util.Map;
 
 //You may need to change this to your package name if it differs from this
 //You can find it in AndroidManifest.xml or android.json most likely
 import io.cordova.hellocordova.R;
+
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -22,7 +26,6 @@ import org.apache.cordova.CordovaInterface;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import org.puredata.android.io.AudioParameters;
 import org.puredata.android.io.PdAudio;
@@ -32,72 +35,114 @@ import org.puredata.core.utils.IoUtils;
 
 public class PdPlugin extends CordovaPlugin {
 
-    private boolean theBang = false;
-    private double theFloat = 0;
+    private Map<String, Boolean> bangs = new HashMap<>();
+    private Map<String, Float> floats = new HashMap<>();
+    private Map<String, String[]> lists = new HashMap<>();
+    private Map<String, String> symbols = new HashMap<>();
+    private Map<String, String> messages = new HashMap<>();
+    private Map<String, String[]> messageArguments = new HashMap<>();
     private String[] theList;
-    private String theSymbol;
-    private String theMessage;
     private String[] theMessageArguments;
-    private String[] theListArguments;
 	private CallbackContext callback;
+	private boolean noBackgroundAudio = false;
+	private float on = 0;
+
+
     //This should handle data from Pd
     private final PdReceiver receiver = new PdReceiver() {
 
 @Override public void print(String s) {
-			Log.i("From Pd: ", s);
+			Log.e("From Pd: ", s);
 }
 		
 @Override
     public void receiveBang(String source) {
-        theBang = true;
-    }
+         if (bangs.containsKey(source))
+         {
+            bangs.put(source, true);
+         }
+}
 
 @Override
     public void receiveFloat(String source, float x) {
-            theFloat = x;
+
+        if(floats.containsKey(source))
+        {
+            floats.put(source, x);
+        }
+
     }
 
 @Override
     public void receiveList(String source, Object... args) {
-        theList = new String[args.length];
-        int i = 0;
-        for (Object arg: args) {
-            theList[i++] = arg.toString();
+
+        if(lists.containsKey(source)) {
+            theList = new String[args.length];
+            int i = 0;
+            for (Object arg : args) {
+                theList[i++] = arg.toString();
+            }
+            lists.put(source, theList);
         }
     }
 
 @Override
     public void receiveMessage(String source, String message, Object... args) {
-        theMessage = message;
-        theMessageArguments = new String[args.length];
-        int i = 0;
-        for (Object arg: args) {
-            theMessageArguments[i++] = arg.toString();
+
+        if(messages.containsKey(source)) {
+
+            messages.put(source, message);
+            theMessageArguments = new String[args.length];
+            int i = 0;
+            for (Object arg : args) {
+
+                 theMessageArguments[i++] = arg.toString();
+            }
+            messageArguments.put(source, theMessageArguments);
         }
     }
 
 @Override
     public void receiveSymbol(String source, String symbol) {
-        theSymbol = symbol;
+        if(symbols.containsKey(source))
+        {
+           symbols.put(source, symbol);
+        }
+
     }
 
 };//end receiver
 
-	
-/* this is how we initialize Pd */
+@Override
+public void onStop() {
+    Log.d("PdPlugin", "OnStop()");
+}
+
+@Override
+public void onPause(boolean multitasking) {
+    Log.d("PdPlugin", "OnPause() " + multitasking);
+}
+
+    /* this is how we initialize Pd */
 private void initPd() {
+        Log.d("PdPlugin","initPd()");
         PdBase.setReceiver(receiver);
-        AudioParameters.init(this.cordova.getActivity());
-        int srate = Math.max(44100, AudioParameters.suggestSampleRate());
-        try {
-			PdAudio.initAudio(srate, 0, 2, 1, true);
-		}
-		catch(IOException e) {
-			Log.w("Audio error: ", e);
-		}
+
+        //This will initialize the audio thread if you are not using the background service
+        if(noBackgroundAudio) {
+            AudioParameters.init(this.cordova.getActivity());
+            int srate = Math.max(44100, AudioParameters.suggestSampleRate());
+            try {
+                PdAudio.initAudio(srate, 0, 2, 1, true);
+                PdAudio.startAudio(this.cordova.getActivity());
+            } catch (IOException e) {
+                Log.w("Audio error: ", e);
+            }
+        }
+
         Resources res = this.cordova.getActivity().getResources();
         File patchFile = null;
-        try {
+    try {
                 /*the following bit is experimental.  If you need to link abstractions it seems like using
                  the IoUtils.extractZipResources() properly links the paths to your externals/abstractions etc.*/
 /*
@@ -106,25 +151,24 @@ private void initPd() {
                 IoUtils.extractZipResource(res.openRawResource(R.raw.cordova), dir, true);//make sure your zip is called cordova.zip
                 PdBase.openPatch(patchFile.getAbsolutePath());
  */
-            /*if you are using more than one patch or external comment the following lines out 
+            /*if you are using more than one patch or external comment the following lines out
              and uncomment the above.*/
-            InputStream in = res.openRawResource(R.raw.cordova);
-            patchFile = IoUtils.extractResource(in, "cordova.pd", this.cordova.getActivity().getCacheDir());
-            PdBase.openPatch(patchFile);
-             
-        } catch (IOException e) {
-            Log.e("File error: ", e.toString());
-        }
+        InputStream in = res.openRawResource(R.raw.cordova);
+        patchFile = IoUtils.extractResource(in, "cordova.pd", this.cordova.getActivity().getCacheDir());
+        PdBase.openPatch(patchFile);
 
-}
+    } catch (IOException e) {
+        Log.e("File error: ", e.toString());
+    }
 
+    }
 
 @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
 
         super.initialize(cordova, webView);
-        this.initPd();
-        PdAudio.startAudio(this.cordova.getActivity());
+        initPd();
+
     }
 
 @Override
@@ -225,6 +269,11 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
             this.cordovaReceiveSymbol(args.getString(0));
             return true;
         }
+        if(action.equals("echo"))
+        {
+            this.echo(args.getString(0));
+            return true;
+        }
 
         return false;
     }//end execute
@@ -233,12 +282,14 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
 @Override
 public void onDestroy() {
         // make sure to release all resources
-        PdAudio.stopAudio();
-        PdAudio.release();
+        if(noBackgroundAudio) {
+            PdAudio.stopAudio();
+            PdAudio.release();
+        }
         PdBase.release();
     }
 
-	
+
     //Send to Pd
     
     private void sendBang(String receiveName) {
@@ -262,48 +313,94 @@ public void onDestroy() {
     }
 
     private void cordovaReceiveBang(String sendName) {
-        PdBase.subscribe(sendName);
-        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-            theBang));
+        if(bangs.containsKey(sendName))
+        {
+            this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+                    bangs.get(sendName)));
+        }
+        else
+        {
+            PdBase.subscribe(sendName);
+            bangs.put(sendName, false);
+        }
+
     }
 
     private void cordovaReceiveFloat(String sendName) {
-        PdBase.subscribe(sendName);
-        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-                                                                   (float)theFloat));
-    }
+
+        if(floats.containsKey(sendName))
+        {
+            this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+                    floats.get(sendName)));
+        }
+        else
+        {
+            PdBase.subscribe(sendName);
+            floats.put(sendName, 0.f);
+        }
+}
 
     private void cordovaReceiveList(String sendName) {
-        PdBase.subscribe(sendName);
-		//JSONArray list;
-        try {
-            JSONArray list = new JSONArray(theList);
-            this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-                    list));
-		}
-		catch(JSONException j) {
-			Log.w("Idiot, it don't work: ", j);
-		}	
 
+		//JSONArray list;
+        if(lists.containsKey(sendName)) {
+            try {
+                JSONArray list = new JSONArray(lists.get(sendName));
+                this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+                        list));
+            } catch (JSONException j) {
+                Log.w("cordovaRecieveList JSON Error: ", j);
+            }
+        }
+        else
+        {
+            PdBase.subscribe(sendName);
+            String [] dummy = new String[100];//if you have more than 100 lists in your Pd patch, God help you!
+            lists.put(sendName, dummy);
+        }
     }
 
     private void cordovaReceiveMessage(String sendName) {
-        PdBase.subscribe(sendName);
-        final StringBuffer buffer = new StringBuffer();
-        buffer.append(theMessage);
-        for(final String s : theMessageArguments) {
-            buffer.append(" ");
-            buffer.append(s);
+
+        if(messages.containsKey(sendName)) {
+            final StringBuffer buffer = new StringBuffer();
+            buffer.append(messages.get(sendName));
+            theMessageArguments = messageArguments.get(sendName);
+            for (final String s : theMessageArguments) {
+                buffer.append(" ");
+                buffer.append(s);
+            }
+            this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+                    buffer.toString()));
         }
-        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-        buffer.toString()));
+        else
+        {
+            PdBase.subscribe(sendName);
+            messages.put(sendName, "");
+            String [] args = new String[100];
+            messageArguments.put(sendName, args);
+        }
     }
 
     private void cordovaReceiveSymbol(String sendName) {
-            PdBase.subscribe(sendName);
-            this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
-            theSymbol));
+
+            if(symbols.containsKey(sendName)) {
+                this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+                        symbols.get(sendName)));
+            }
+            else
+            {
+                PdBase.subscribe(sendName);
+                symbols.put(sendName, "");
+            }
     }
+
+    private void echo(String e){
+        this.callback.sendPluginResult(new PluginResult(PluginResult.Status.OK,
+                e));
+       // Log.e("From PdPlugin", e);
+    }
+    
 
 } //end PdPlugin class
 

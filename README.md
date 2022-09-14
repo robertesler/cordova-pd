@@ -75,12 +75,11 @@ Messages and Lists:  Right now the API for these is still not fully tested. Sinc
 
 ## Instructions for Android 
 
-The Android version is still in development.  It will run as of now but still in a testing phase. 
-Check in regularly for any updates.  
+The Android version is now stable.  After adding the platform and plugin:
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.3" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.9" />
 ```
 2) Then either add the android platform or try:
 ```
@@ -90,7 +89,7 @@ The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When t
 it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
 you plan to release both iOS and Android.  
 
-If you want cordova to copy your .pd file from /www you can now try uncommenting the line:
+If you want cordova to copy your .pd file from /www you can try uncommenting the line:
 ```
 <hook type="before_prepare" src="scripts/copyPdFile.js" />
 ```
@@ -100,7 +99,7 @@ cordova prepare android
 ```
 If you need to use abstractions or externals look at the commented out code in the PdPlugin.java and alter it accordingly.  It seems to work if the patches are .zip then extracted by Android.
 
-You may need to edit the PdPlugin.java file line: 
+You will need to edit the three Java files, line: 
 ```
 import io.cordova.hellocordova.R
 ```
@@ -137,7 +136,7 @@ Make sure to wrap your plugin function calls in ```$ionicPlatform.ready()``` and
 to use the ```.then()``` method.  This is especially if you are trying to receive
 data from Pd.  
 
-## Typescript and Ionic 2
+## Typescript and Ionic 2 (deprecated)
   It appears that Ionic 2 is relying heavily on typescript.  To interface with this plugin directly in typescript use this syntax:
   ```
 (<any>window).plugins.pd.sendBang("receiveName")
@@ -173,7 +172,8 @@ window.plugins.pd.sendList("receiveName", list)
 
 Receive a bang from a sender (returns a bool set as true)
 ```
-window.plugins.pd.receiveBang("sendName")
+window.plugins.pd.receiveBang("sendName", success, fail)
+
 //example code for most receives from libpd:
 window.plugins.pd.receiveBang("sendName",
 function success(e) {
@@ -185,17 +185,17 @@ function fail() {
 ```
 Receive a float from a sender (returns a float)
 ```
-window.plugins.pd.receiveFloat("sendName")
+window.plugins.pd.receiveFloat("sendName", success, fail)
 ```
 Receive a symbol from a sender (returns a String)
 ```
-window.plugins.pd.receiveSymbol("sendName")
+window.plugins.pd.receiveSymbol("sendName", success, fail)
 ```
 Receive a message from a sender (returns a String)
 ```
-window.plugins.pd.receiveMessage("sendName")
+window.plugins.pd.receiveMessage("sendName", success, fail)
 ```
 Receive a List from a sender (returns a JSON)
 ```
-window.plugins.pd.receiveList("sendName")
+window.plugins.pd.receiveList("sendName", success, fail)
 ```
