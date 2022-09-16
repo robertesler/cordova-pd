@@ -10,12 +10,12 @@
 
 @implementation PdPlugin
 
-@synthesize theFloat;
-@synthesize theBang;
-@synthesize theString;
-@synthesize theList;
-@synthesize theMessage;
-@synthesize theArguments;
+@synthesize floats;
+@synthesize bangs;
+@synthesize symbols;
+@synthesize messages;
+@synthesize lists;
+@synthesize messageArgs;
 
 // intialize libpd, change settings via the audioController
 
@@ -35,8 +35,7 @@
         NSLog(@"Audio Configuration successful.");
     }
     //This prints the Pd Log to the Xcode console view
-    dispatcher = [[PdDispatcher alloc] init];
-    [PdBase setDelegate:dispatcher];
+   
     
     [PdBase openFile:@"cordova.pd" path:[[NSBundle mainBundle] bundlePath] ];
      // was [PdBase openFile:@"test.pd" path:[[NSBundle mainBundle] resourcePath]];
@@ -45,6 +44,14 @@
     
     // log actual settings
     [self.audioController print];
+   
+    //allocate NSMutableDictionary classes
+    floats = [[NSMutableDictionary alloc] init];
+    bangs = [[NSMutableDictionary alloc] init];
+    symbols = [[NSMutableDictionary alloc] init];
+    messages = [[NSMutableDictionary alloc] init];
+    lists = [[NSMutableDictionary alloc] init];
+    messageArgs = [[NSMutableDictionary alloc] init];
     NSLog(@"Pd Plugin Initialized!");
 }
 
@@ -97,7 +104,7 @@
 - (void)sendBang: (CDVInvokedUrlCommand *)command
 {
     NSString* receiveName = [command.arguments objectAtIndex:0];
-    NSLog(@"sendBang!\n");
+    //NSLog(@"sendBang!\n");
     
     [PdBase sendBangToReceiver:receiveName];
 }
@@ -145,97 +152,138 @@
 - (void) cordovaReceiveBang:(CDVInvokedUrlCommand *)command {
     
     NSString* theSend = [command.arguments objectAtIndex:0];
-    NSLog(@"listening to %@\n", theSend);
+    //NSLog(@"listening to %@\n", theSend);
     CDVPluginResult* pluginResult = nil;
 
-    PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
-    [PdBase setDelegate:self];
-    [PdBase subscribe:theSend];
-    [dispatcher addListener:self forSource:theSend];
     
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:theBang];
+    if(bangs[theSend] != nil)
+    {
+        NSString *s = bangs[theSend];
+        BOOL b;
+        if([s isEqualToString:@"true"])
+            b = YES;
+        else
+            b = NO;
+    
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:b];
 
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-   
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
+    else
+    {
+        PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+        [PdBase setDelegate:self];
+        [PdBase subscribe:theSend];
+        [dispatcher addListener:self forSource:theSend];
+        [bangs setObject:@"false" forKey:theSend];
+    }
+    
+    
     
 }
 
 - (void) cordovaReceiveFloat:(CDVInvokedUrlCommand *)command {
     
     NSString* theSend = [command.arguments objectAtIndex:0];
-    NSLog(@"listening to %@\n", theSend);
+   // NSLog(@"listening to %@\n", theSend);
     CDVPluginResult* pluginResult = nil;
     
-     PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
-    [PdBase setDelegate:self];
-    [PdBase subscribe:theSend];
-    [dispatcher addListener:self forSource:theSend];
-    
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:theFloat];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-    
+    if(floats[theSend] != nil)
+    {
+        NSNumber *n = floats[theSend];
+        double d = [n doubleValue];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDouble:d];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
+    else
+    {
+        PdDispatcher *dispatcher = [[PdDispatcher alloc] init];
+        [PdBase setDelegate:dispatcher];
+        [PdBase setDelegate:self];
+        [PdBase subscribe:theSend];
+        [dispatcher addListener:self forSource:theSend];
+        [floats setObject:@0 forKey:theSend];
+    }
+   
 }
 
 - (void)cordovaReceiveSymbol:(CDVInvokedUrlCommand *)command {
+    
+   
     NSString* theSend = [command.arguments objectAtIndex:0];
-    NSLog(@"listening to %@\n", theSend);
+    //NSLog(@"listening to %@\n", theSend);
     CDVPluginResult* pluginResult = nil;
     
-    PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
-    [PdBase setDelegate:self];
-    [PdBase subscribe:theSend];
-    [dispatcher addListener:self forSource:theSend];
-   
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:theString];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    if(symbols[theSend] != nil)
+    {
+        NSString *s = symbols[theSend];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:s];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        
+    }
+    else
+    {
+        PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+        [PdBase setDelegate:self];
+        [PdBase subscribe:theSend];
+        [dispatcher addListener:self forSource:theSend];
+        [symbols setObject:@"null" forKey:theSend];
+    }
 }
 
 - (void)cordovaReceiveList:(CDVInvokedUrlCommand *)command {
+    
     NSString* theSend = [command.arguments objectAtIndex:0];
-    NSLog(@"listening to %@\n", theSend);
+    //NSLog(@"listening to %@\n", theSend);
     CDVPluginResult* pluginResult = nil;
     
-    PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
-    [PdBase setDelegate:self];
-    [PdBase subscribe:theSend];
-    [dispatcher addListener:self forSource:theSend];
-    
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:theList];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
+    if(lists[theSend] != nil)
+    {
+        NSArray *s = lists[theSend];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:s];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        
+    }
+    else
+    {
+        PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+        [PdBase setDelegate:self];
+        [PdBase subscribe:theSend];
+        [dispatcher addListener:self forSource:theSend];
+        [lists setObject:@"null" forKey:theSend];
+    }
     
 }
 
 - (void)cordovaReceiveMessage:(CDVInvokedUrlCommand *)command {
+    
     NSString* theSend = [command.arguments objectAtIndex:0];
-    NSLog(@"listening to %@\n", theSend);
+   // NSLog(@"listening to %@\n", theSend);
     CDVPluginResult* pluginResult = nil;
     
-    PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
-    [PdBase setDelegate:self];
-    [PdBase subscribe:theSend];
-    [dispatcher addListener:self forSource:theSend];
     
-    NSArray *theMessageWithArguments;
-    theMessageWithArguments = [NSArray arrayWithObjects:theMessage, theArguments, nil];
-    NSString *fullMessage = [[theMessageWithArguments valueForKey:@"description"] componentsJoinedByString:@" "];
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:fullMessage];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-
-}
-
-- (void)echo:(CDVInvokedUrlCommand *)command {
-    NSString* text = [command.arguments objectAtIndex:0];
-    NSLog(@"print: %@\n", text);
-    CDVPluginResult* pluginResult = nil;
-    
+    if(messages[theSend] != nil)
+    {
+        NSArray *theMessageWithArguments = messageArgs[theSend];
+        
+        NSString *args = [theMessageWithArguments componentsJoinedByString:@","];
+        
+       
+        NSString *fullMessage = [NSString stringWithFormat:@"%@ %@", messages[theSend], args];
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:fullMessage];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
+    else
+    {
+        PdDispatcher* dispatcher = [[PdDispatcher alloc] init];
+        [PdBase setDelegate:self];
+        [PdBase subscribe:theSend];
+        [dispatcher addListener:self forSource:theSend];
+        [messages setObject:@"null" forKey:theSend];
+        NSArray *ma =  @[@"arg1", @"arg2"];
+        [messageArgs setObject:ma forKey:theSend];
+    }
    
-    
-    NSArray *theMessageWithArguments;
-    theMessageWithArguments = [NSArray arrayWithObjects:theMessage, theArguments, nil];
-    NSString *fullMessage = [[theMessageWithArguments valueForKey:@"description"] componentsJoinedByString:@" "];
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:fullMessage];
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 
 }
 
@@ -257,28 +305,53 @@
 
 - (void)receiveFloat:(float)received fromSource:(NSString *)source {
     
-    theFloat = (double)received;
+    NSNumber *f = [NSNumber numberWithFloat:received];
+   
+    if(floats[source] != nil)
+    {
+        [floats setObject:f forKey:source];
+	    }
 }
 
 - (void)receiveBangFromSource:(NSString *)source {
     
-    theBang = true;
+       
+        if(bangs[source] != nil)
+        {
+            [bangs setObject:@"true" forKey:source];
+        }
+
 }
 
 - (void)receiveSymbol:(NSString *)symbol fromSource:(NSString *)source {
     
-    theString = symbol;
+    if(symbols[source] != nil)
+    {
+        [symbols setObject:symbol forKey:source];
+    }
+    
+   
 }
 
 - (void)receiveList:(NSArray *)list fromSource:(NSString *)source {
     
-    theList = list;
+    if(lists[source] != nil)
+    {
+        [lists setObject:list forKey:source];
+    }
 }
 
 - (void) receiveMessage:(NSString *)message withArguments:(NSArray *)arguments fromSource:(NSString *)source {
    
-    theMessage = message;
-    theArguments = arguments;
+    if(messages[source] != nil)
+    {
+        [messages setObject:message forKey:source];
+        [messageArgs setObject:arguments forKey:source];
+    }
+    
+      
+    
+    
 }
 
 @end

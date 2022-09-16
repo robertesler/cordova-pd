@@ -39,10 +39,11 @@ cordova prepare ios
 5) Build your application using Xcode.  The cordova build option does not currently work when
   linking the static library.
 
-6) Put your pd patches in the root Xcode project folder (the one with the project file) and copy your patches to the project's Resource folder in Xcode.
+6) Add your pd patch(es) to the project's Resource folder in Xcode. (right-click on the Resources folder and "Add Files...").  The patch should be in the root /www folder.
 
 7) If you want to test in the simulator see the REAME.md file in the x86_64 folder.
-#NOTE:
+
+##NOTE:
 
  This project uses dependencies that are maintained by other developers.  These include:
 
@@ -64,7 +65,7 @@ To add any custom externals you need to follow the libpd protocol here:
 
 ## Using your patches in iOS
 Your main patch needs to be called cordova.pd and located in the root /www folder.  You can use
-other abstractions or folders, look at the [declare] object.
+other abstractions or folders, look at the [declare] object.  Make sure you added the patch to your Xcode project, see above.
 
 ## Passing and Receiving Data 
 In general you should try to only pass data to Pd and not rely too much on receiving data from Pd.  
