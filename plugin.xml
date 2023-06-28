@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
- Copyright 2018 Robert Esler
+ Copyright 2022 Robert Esler
  
  Licensed to the Apache Software Foundation (ASF) under one
  or more contributor license agreements.  See the NOTICE file
@@ -24,7 +24,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="org.urbanstew.cordova.pd"
-    version="0.0.4">
+    version="0.0.10">
     
     <name>PdPlugin</name>
     
@@ -82,13 +82,44 @@
                 <param name="onload" value="true"/>
             </feature>
         </config-file>
+
+        <config-file target="AndroidManifest.xml"  parent="application">
+            <receiver android:exported="true" android:name="androidx.media.session.MediaButtonReceiver">
+                <intent-filter>
+                    <action android:name="android.intent.action.MEDIA_BUTTON" />
+                </intent-filter>
+            </receiver>
+            <service android:enabled="true" android:exported="true" android:name="org.urbanstew.cordova.pd.PdPluginService">
+                <intent-filter>
+                    <action android:name="android.intent.action.MEDIA_BUTTON" />
+                </intent-filter>
+            </service>
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.RECORD_AUDIO" />
+            <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+            <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+            <uses-feature android:name="android.hardware.bluetooth" />
+            <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+            <uses-permission android:name="android.permission.BLUETOOTH" />
+        </config-file>
+
+        <edit-config file="AndroidManifest.xml" target="/manifest/application/activity" mode="overwrite">
+            <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode" android:exported="true" android:label="@string/activity_name" android:launchMode="singleTop" android:name="org.urbanstew.cordova.pd.PdActivity" android:theme="@style/Theme.AppCompat.NoActionBar" android:windowSoftInputMode="adjustResize"/>
+        </edit-config>
         
 	<!-- This is experimental for now, uncomment the line below if you want cordova to copy your .pd file
- 		everytime you execute 'cordova prepare android' -->
-	<hook type="before_prepare" src="scripts/copyPdFile.js" />
-
+ 		from the www/ directory everytime you execute 'cordova prepare android' -->
+	<!--<hook type="before_prepare" src="scripts/copyPdFile.js" /> -->
+    
         <source-file src="src/android/org/urbanstew/cordova/pd/PdPlugin.java"
         target-dir="src/org/urbanstew/cordova/pd"/>
+        <source-file src="src/android/org/urbanstew/cordova/pd/PdActivity.java"
+        target-dir="src/org/urbanstew/cordova/pd"/>
+        <source-file src="src/android/org/urbanstew/cordova/pd/PdPluginService.java"
+        target-dir="src/org/urbanstew/cordova/pd"/>
+
         <resource-file src="libs/pd-core-1.0.4.aar" target="libs/pd-core-1.0.4.aar" />
         <resource-file src="www/cordova.pd" target="res/raw/cordova.pd" />
         <framework src="pd.gradle" custom="true" type="gradleReference" />
