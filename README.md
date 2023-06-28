@@ -39,10 +39,11 @@ cordova prepare ios
 5) Build your application using Xcode.  The cordova build option does not currently work when
   linking the static library.
 
-6) Put your pd patches in the root Xcode project folder (the one with the project file) and copy your patches to the project's Resource folder in Xcode.
+6) Add your pd patch(es) to the project's Resource folder in Xcode. (right-click on the Resources folder and "Add Files...").  The patch should be in the root /www folder.
 
 7) If you want to test in the simulator see the REAME.md file in the x86_64 folder.
-#NOTE:
+
+##NOTE:
 
  This project uses dependencies that are maintained by other developers.  These include:
 
@@ -64,7 +65,7 @@ To add any custom externals you need to follow the libpd protocol here:
 
 ## Using your patches in iOS
 Your main patch needs to be called cordova.pd and located in the root /www folder.  You can use
-other abstractions or folders, look at the [declare] object.
+other abstractions or folders, look at the [declare] object.  Make sure you added the patch to your Xcode project, see above.
 
 ## Passing and Receiving Data 
 In general you should try to only pass data to Pd and not rely too much on receiving data from Pd.  
@@ -75,12 +76,11 @@ Messages and Lists:  Right now the API for these is still not fully tested. Sinc
 
 ## Instructions for Android 
 
-The Android version is still in development.  It will run as of now but still in a testing phase. 
-Check in regularly for any updates.  
+The Android version is now stable.  After adding the platform and plugin:
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.3" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.9" />
 ```
 2) Then either add the android platform or try:
 ```
@@ -90,7 +90,7 @@ The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When t
 it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
 you plan to release both iOS and Android.  
 
-If you want cordova to copy your .pd file from /www you can now try uncommenting the line:
+If you want cordova to copy your .pd file from /www you can try uncommenting the line:
 ```
 <hook type="before_prepare" src="scripts/copyPdFile.js" />
 ```
@@ -100,7 +100,7 @@ cordova prepare android
 ```
 If you need to use abstractions or externals look at the commented out code in the PdPlugin.java and alter it accordingly.  It seems to work if the patches are .zip then extracted by Android.
 
-You may need to edit the PdPlugin.java file line: 
+You will need to edit the three Java files, line: 
 ```
 import io.cordova.hellocordova.R
 ```
@@ -137,7 +137,7 @@ Make sure to wrap your plugin function calls in ```$ionicPlatform.ready()``` and
 to use the ```.then()``` method.  This is especially if you are trying to receive
 data from Pd.  
 
-## Typescript and Ionic 2
+## Typescript and Ionic 2 (deprecated)
   It appears that Ionic 2 is relying heavily on typescript.  To interface with this plugin directly in typescript use this syntax:
   ```
 (<any>window).plugins.pd.sendBang("receiveName")
@@ -173,21 +173,30 @@ window.plugins.pd.sendList("receiveName", list)
 
 Receive a bang from a sender (returns a bool set as true)
 ```
-window.plugins.pd.receiveBang("sendName")
+window.plugins.pd.receiveBang("sendName", success, fail)
+
+//example code for most receives from libpd:
+window.plugins.pd.receiveBang("sendName",
+function success(e) {
+ console.log(e);//this is the return value from Cordova
+},
+function fail() {
+ console.log("It failed.");
+});
 ```
 Receive a float from a sender (returns a float)
 ```
-window.plugins.pd.receiveFloat("sendName")
+window.plugins.pd.receiveFloat("sendName", success, fail)
 ```
 Receive a symbol from a sender (returns a String)
 ```
-window.plugins.pd.receiveSymbol("sendName")
+window.plugins.pd.receiveSymbol("sendName", success, fail)
 ```
 Receive a message from a sender (returns a String)
 ```
-window.plugins.pd.receiveMessage("sendName")
+window.plugins.pd.receiveMessage("sendName", success, fail)
 ```
 Receive a List from a sender (returns a JSON)
 ```
-window.plugins.pd.receiveList("sendName")
+window.plugins.pd.receiveList("sendName", success, fail)
 ```

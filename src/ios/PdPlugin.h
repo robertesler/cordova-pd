@@ -15,12 +15,13 @@ PdDispatcher *dispatcher;
 }
 
 @property (nonatomic, retain) PdAudioController *audioController;
-@property (nonatomic, assign) double theFloat;
-@property (nonatomic, assign) BOOL theBang;
-@property (nonatomic, copy) NSString *theString;
-@property (nonatomic, copy) NSArray *theList;
-@property (nonatomic, copy) NSString *theMessage;
-@property (nonatomic, copy) NSArray *theArguments; //from theMessage
+
+@property (nonatomic, copy) NSMutableDictionary *floats;
+@property (nonatomic, copy) NSMutableDictionary *bangs;
+@property (nonatomic, copy) NSMutableDictionary *symbols;
+@property (nonatomic, copy) NSMutableDictionary *lists;
+@property (nonatomic, copy) NSMutableDictionary *messages;
+@property (nonatomic, copy) NSMutableDictionary *messageArgs;
 - (void)sendFloat:(CDVInvokedUrlCommand*)command;
 - (void)sendMessage: (CDVInvokedUrlCommand* )command;
 - (void)sendBang: (CDVInvokedUrlCommand *)command;
@@ -31,6 +32,5 @@ PdDispatcher *dispatcher;
 - (void)cordovaReceiveSymbol:(CDVInvokedUrlCommand *)command;
 - (void)cordovaReceiveList:(CDVInvokedUrlCommand *)command;
 - (void)cordovaReceiveMessage:(CDVInvokedUrlCommand *)command;
-- (void)echo:(CDVInvokedUrlCommand*)command;
 - (void)test:(CDVInvokedUrlCommand*)command;
 @end

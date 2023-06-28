@@ -5,7 +5,9 @@ repositories{
 }
 
 dependencies {
-   compile(name:'pd-core-1.0.4', ext:'aar')
+   implementation(name:'pd-core-1.0.4', ext:'aar')
+   implementation "androidx.appcompat:appcompat:${cordovaConfig.ANDROIDX_APP_COMPAT_VERSION}"
+   implementation "androidx.media:media:1.6.0" //This is necessary for Bluetooth Media Buttons.
 }
 
 android {
