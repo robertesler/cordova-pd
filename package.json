@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 {
   "name": "org.urbanstew.cordova.pd",
   "version": "0.0.10",
@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/robertesler/cordova-pd#readme"
 }
-=======
+
 {
   "name": "org.urbanstew.cordova.pd",
   "version": "0.0.9",
@@ -72,4 +72,3 @@
   },
   "homepage": "https://github.com/robertesler/cordova-pd#readme"
 }
->>>>>>> 57e7ad9bbc3d0a530a2d4e1e7d3d91eccb4e7a45
