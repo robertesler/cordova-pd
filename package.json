@@ -1,4 +1,3 @@
-
 {
   "name": "org.urbanstew.cordova.pd",
   "version": "0.0.11",
@@ -26,43 +25,6 @@
     {
       "name": "cordova",
       "version": ">=3.0.0"
-    }
-  ],
-  "author": "Robert Esler",
-  "license": "Apache 2.0",
-  "bugs": {
-    "url": "https://github.com/robertesler/cordova-pd/issues"
-  },
-  "homepage": "https://github.com/robertesler/cordova-pd#readme"
-
-
-{
-  "name": "org.urbanstew.cordova.pd",
-  "version": "0.0.9",
-  "description": "This plugin allows cordova users to use Pure Data patches in their appsfor music and audio processing through the libpd package.\n",
-  "cordova": {
-    "id": "org.urbanstew.cordova.pd",
-    "platforms": [
-      "ios",
-      "android"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/robertesler/cordova-pd.git"
-  },
-  "keywords": [
-    "Pure Data",
-    "music",
-    "digital audio processing",
-    "ecosystem:cordova",
-    "cordova-ios",
-    "cordova-android"
-  ],
-  "engines": [
-    {
-      "name": "cordova",
-      "version": ">=9.0.0"
     }
   ],
   "author": "Robert Esler",
