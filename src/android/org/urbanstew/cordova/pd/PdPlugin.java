@@ -226,7 +226,17 @@ public boolean execute(String action, JSONArray args, CallbackContext callbackCo
             //type check then convert if necessary
             for(int i = 0; i < tokens.length; i++)
             {
-                if(TextUtils.isDigitsOnly(tokens[i]))
+                 /*
+                isDigitsOnly seems fail if there is '.' so floats seems to return false.
+                So we just take the first character, it should be a number or a '.'
+                Can't imagine many Pd messages that have a '.' at the beginning, but keep
+                that in mind here.
+                */
+
+                char a = tokens[i].charAt(0);
+                String s = Character.toString(a);
+
+                if(TextUtils.isDigitsOnly(s) || s.equals("."))
                 {
                     toLibpd[i] = Float.parseFloat(tokens[i]);
                 }
