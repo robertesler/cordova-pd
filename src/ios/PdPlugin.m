@@ -17,12 +17,20 @@
 @synthesize lists;
 @synthesize messageArgs;
 
+//declare our externals if you have them ex:
+//extern void my_external_setup(void);
+
+
 // intialize libpd, change settings via the audioController
 
 - (void)pluginInitialize
 {
     
     self.audioController = [[PdAudioController alloc] init] ;
+    // You don't have to use these, make sure the Background Audio is turned on for your project
+    self.audioController.allowBluetoothA2DP = YES;
+    self.audioController.allowAirPlay = YES;
+    self.audioController.allowOverrideMutedMicrophoneInterruption = YES;
     PdAudioStatus status = [self.audioController configurePlaybackWithSampleRate:44100
                                                                   numberChannels:2
                                                                     inputEnabled:NO
@@ -36,12 +44,13 @@
     }
     //This prints the Pd Log to the Xcode console view
    
-    
+    //call the setup() function here
+    //my_exteranl_setup();
     [PdBase openFile:@"cordova.pd" path:[[NSBundle mainBundle] bundlePath] ];
      // was [PdBase openFile:@"test.pd" path:[[NSBundle mainBundle] resourcePath]];
     
     [self.audioController setActive:YES];
-    
+    self.on = 1;
     // log actual settings
     [self.audioController print];
    
@@ -53,17 +62,125 @@
     lists = [[NSMutableDictionary alloc] init];
     messageArgs = [[NSMutableDictionary alloc] init];
     NSLog(@"Pd Plugin Initialized!");
+    
+    //Here is our lock screen "Now Playing" code
+    //Add or remove whatever you like.  See code below for how to implement
+    MPRemoteCommandCenter *commandCenter = [MPRemoteCommandCenter sharedCommandCenter];
+
+    MPRemoteCommand *pause = [commandCenter pauseCommand];
+    [pause setEnabled:YES];
+    [pause addTarget:self action:@selector(pauseAudio:)];
+    
+    MPRemoteCommand *play = [commandCenter playCommand];
+    [play setEnabled:YES];
+    [play addTarget:self action:@selector(pauseAudio:)];
+    
+    MPRemoteCommand *toggle = [commandCenter togglePlayPauseCommand];
+    [toggle setEnabled:YES];
+    [toggle addTarget:self action:@selector(pauseAudio:)];
+
+
+    MPRemoteCommand *back = [commandCenter previousTrackCommand];
+    [back setEnabled:YES];
+    [back addTarget:self action:@selector(prevTrack:)];
+
+    MPRemoteCommand *next = [commandCenter nextTrackCommand];
+    [next setEnabled:YES];
+    [next addTarget:self action:@selector(prevTrack:)];
+    
+    Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
+    if(playingInfoCenter) {
+        NSMutableDictionary *songInfo = [NSMutableDictionary dictionaryWithDictionary:[MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo];
+        [songInfo setObject:[NSString stringWithFormat:@"AppName"] forKey:MPMediaItemPropertyTitle];
+        [songInfo setObject:[NSString stringWithFormat:@"by Your Name"] forKey:MPMediaItemPropertyArtist];
+        [songInfo setObject:[NSNumber numberWithFloat:60000.0f] forKey:MPMediaItemPropertyPlaybackDuration];
+        [songInfo setObject:[NSNumber numberWithFloat:0.0f] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+        [songInfo setObject:[NSNumber numberWithFloat:0.0f] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
+        [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = songInfo;
+    }
+}
+
+- (BOOL)getAudioStatus {
+    return self.audioController.active;
+}
+
+- (void)audioOn {
+    self.audioController.active = YES;
+    NSLog(@"Audio Status is Active");
+}
+
+- (void)audioOff {
+    self.audioController.active = NO;
+    NSLog(@"Audio Status is NOT Active");
+}
+
+-(void)pause {
+    
+    if(self.on)
+    {
+        //OFF
+        // make sure you have a receive called 'on' in your pd patch
+        [PdBase sendFloat:2 toReceiver:@"on"];
+        
+        Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
+        if(playingInfoCenter) {
+      
+            NSMutableDictionary *songInfo = [NSMutableDictionary dictionaryWithDictionary:[MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo];
+            [songInfo setObject:[NSString stringWithFormat:@"MyApp: Pause"] forKey:MPMediaItemPropertyTitle];
+            [songInfo setObject:[NSString stringWithFormat:@"by Your Name"] forKey:MPMediaItemPropertyArtist];
+            [songInfo setObject:[NSNumber numberWithFloat:60000.0f] forKey:MPMediaItemPropertyPlaybackDuration];
+            [songInfo setObject:[NSNumber numberWithFloat:1.0f] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+            [songInfo setObject:[NSNumber numberWithFloat:1.0f] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
+            [songInfo setObject:[NSNumber numberWithFloat:0.0f] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+            [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = songInfo;
+        }
+        
+        //OFF
+        self.on = 0;
+    }
+    else
+    {
+        Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
+        if(playingInfoCenter) {
+            
+            NSMutableDictionary *songInfo = [NSMutableDictionary dictionaryWithDictionary:[MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo];
+            [songInfo setObject:[NSString stringWithFormat:@"MyApp: Playing"] forKey:MPMediaItemPropertyTitle];
+            [songInfo setObject:[NSString stringWithFormat:@"by Your Name"] forKey:MPMediaItemPropertyArtist];
+            [songInfo setObject:[NSNumber numberWithFloat:60000.0f] forKey:MPMediaItemPropertyPlaybackDuration];
+            [songInfo setObject:[NSNumber numberWithFloat:1.0f] forKey:MPNowPlayingInfoPropertyElapsedPlaybackTime];
+            [songInfo setObject:[NSNumber numberWithFloat:1.0f] forKey:MPNowPlayingInfoPropertyDefaultPlaybackRate];
+            [songInfo setObject:[NSNumber numberWithFloat:1.0f] forKey:MPNowPlayingInfoPropertyPlaybackRate];
+            [MPNowPlayingInfoCenter defaultCenter].nowPlayingInfo = songInfo;
+         }
+        self.on = 1;
+       
+        //ON
+       // make sure you have a receive called 'on' in your pd patch
+        [PdBase sendFloat:1 toReceiver:@"on"];
+
+    }
+   
+}
+
+-(MPRemoteCommandHandlerStatus) pauseAudio: (MPRemoteCommandHandlerStatus *)event
+{
+    [self pause];
+    return MPRemoteCommandHandlerStatusSuccess;
+}
+
+-(MPRemoteCommandHandlerStatus) prevTrack: (MPRemoteCommandHandlerStatus *)event
+{
+    // make sure you have a receive called 'prev' in your pd patch
+    [PdBase sendBangToReceiver: @"prev"];
+    return MPRemoteCommandHandlerStatusSuccess;
 }
 
 - (void)sendFloat:(CDVInvokedUrlCommand*)command
 {
     
-   // CDVPluginResult* pdFloat;
     float sendToPd;
     
     NSString* receiveName = [command.arguments objectAtIndex:0];
-    //NSNumber* value = [command.arguments objectAtIndex:1 withDefault:[NSNumber numberWithFloat:0.0]];
-    
     NSNumber* value = [command.arguments objectAtIndex:1];
     sendToPd = value.floatValue;
     

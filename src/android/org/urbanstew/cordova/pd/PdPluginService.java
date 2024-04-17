@@ -377,7 +377,7 @@ public class PdPluginService extends Service {
         }
 
         //PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-        //This is now necessary for Android 31 or higher.  The current PdService does not have this code, yet. As of 9/12/2022
+        //This is now necessary for Android 31 or higher.
         PendingIntent pi = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             pi = PendingIntent.getActivity(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -393,27 +393,30 @@ public class PdPluginService extends Service {
                 .setContentIntent(mediaSessionCompat.getController().getSessionActivity())
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
-                // These are possible actions you could add to your notification GUI
-                /*
+                /* These are possible actions you could add to your notification GUI
+                   Feel free to change or remove these.  Your app may crash if you
+                   don't have corresponding strings in the strings.xml or icons in
+                   the res/drawable* folders
+                */
                 .addAction(new NotificationCompat.Action(
-                        R.drawable.ic_action_name, getString(R.string.ff),
+                        R.drawable.ic_action_name, "Something",
                         MediaButtonReceiver.buildMediaButtonPendingIntent(getApplicationContext(),
                                 PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS)))
 
                 .addAction(new NotificationCompat.Action(
-                        R.drawable.ic_action_stop, getString(R.string.stop),
+                        R.drawable.ic_action_stop, "Stop",
                         MediaButtonReceiver.buildMediaButtonPendingIntent(getApplicationContext(),
                                 PlaybackStateCompat.ACTION_STOP)))
 
                 .addAction(new NotificationCompat.Action(
-                        R.drawable.ic_action_play, getString(R.string.play),
+                        R.drawable.ic_action_play, "Play",
                         MediaButtonReceiver.buildMediaButtonPendingIntent(getApplicationContext(),
                                 PlaybackStateCompat.ACTION_FAST_FORWARD)))
-                */
+
                 // Take advantage of MediaStyle features
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setMediaSession(mediaSessionCompat.getSessionToken())
-                        .setShowActionsInCompactView(0,1,2))
+                        .setShowActionsInCompactView(0,1,2))//the 0,1,2 refer to the above .addAction() calls
 
 
                 .setWhen(System.currentTimeMillis())

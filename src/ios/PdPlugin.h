@@ -22,6 +22,14 @@ PdDispatcher *dispatcher;
 @property (nonatomic, copy) NSMutableDictionary *lists;
 @property (nonatomic, copy) NSMutableDictionary *messages;
 @property (nonatomic, copy) NSMutableDictionary *messageArgs;
+@property (nonatomic, getter=isPlaying) BOOL playing; // a globally accesible flag to start or stop audio
+@property (nonatomic, assign) int on;
+
+- (BOOL)getAudioStatus;
+- (void)audioOn;
+- (void)audioOff;
+- (void)pause;
+- (MPRemoteCommandHandlerStatus) pauseAudio: (MPRemoteCommandHandlerStatus *)event;
 - (void)sendFloat:(CDVInvokedUrlCommand*)command;
 - (void)sendMessage: (CDVInvokedUrlCommand* )command;
 - (void)sendBang: (CDVInvokedUrlCommand *)command;

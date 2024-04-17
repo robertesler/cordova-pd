@@ -25,7 +25,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android"
     id="org.urbanstew.cordova.pd"
-    version="0.0.12">
+    version="0.0.13">
     
     <name>PdPlugin</name>
     
@@ -90,7 +90,7 @@
                     <action android:name="android.intent.action.MEDIA_BUTTON" />
                 </intent-filter>
             </receiver>
-            <service android:enabled="true" android:exported="true" android:name="org.urbanstew.cordova.pd.PdPluginService">
+            <service android:enabled="true" android:exported="true" android:foregroundServiceType="mediaPlayback" android:name="org.urbanstew.cordova.pd.PdPluginService">
                 <intent-filter>
                     <action android:name="android.intent.action.MEDIA_BUTTON" />
                 </intent-filter>
@@ -104,6 +104,7 @@
             <uses-feature android:name="android.hardware.bluetooth" />
             <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
             <uses-permission android:name="android.permission.BLUETOOTH" />
+            <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
         </config-file>
 
         <edit-config file="AndroidManifest.xml" target="/manifest/application/activity" mode="overwrite">
@@ -123,6 +124,34 @@
 
         <resource-file src="libs/pd-core-1.0.4.aar" target="libs/pd-core-1.0.4.aar" />
         <resource-file src="www/cordova.pd" target="res/raw/cordova.pd" />
+        <!-- These are basic graphics used for a default notification.  See PdPluginService.java ~line 446
+             for where they are used in the code.  -->
+        <resource-file src="src/android/res/values/strings.xml" target="res/values/" />
+        <resource-file src="src/android/res/drawable-anydpi/ic_action_mic.xml" target="res/drawable-anydpi/" />
+        <resource-file src="src/android/res/drawable-anydpi/ic_action_name.xml" target="res/drawable-anydpi/" />
+        <resource-file src="src/android/res/drawable-anydpi/ic_action_stop.xml" target="res/drawable-anydpi/" />
+        <resource-file src="src/android/res/drawable-anydpi/ic_action_play.xml" target="res/drawable-anydpi/" />
+
+        <resource-file src="src/android/res/drawable-hdpi/ic_action_mic.png" target="res/drawable-hdpi/" />
+        <resource-file src="src/android/res/drawable-hdpi/ic_action_name.png" target="res/drawable-hdpi/" />
+        <resource-file src="src/android/res/drawable-hdpi/ic_action_stop.png" target="res/drawable-hdpi/" />
+        <resource-file src="src/android/res/drawable-hdpi/ic_action_play.png" target="res/drawable-hdpi/" />
+
+        <resource-file src="src/android/res/drawable-mdpi/ic_action_mic.png" target="res/drawable-mdpi/" />
+        <resource-file src="src/android/res/drawable-mdpi/ic_action_name.png" target="res/drawable-mdpi/" />
+        <resource-file src="src/android/res/drawable-mdpi/ic_action_stop.png" target="res/drawable-mdpi/" />
+        <resource-file src="src/android/res/drawable-mdpi/ic_action_play.png" target="res/drawable-mdpi/" />
+
+        <resource-file src="src/android/res/drawable-xdpi/ic_action_mic.png" target="res/drawable-xdpi/" />
+        <resource-file src="src/android/res/drawable-xdpi/ic_action_name.png" target="res/drawable-xdpi/" />
+        <resource-file src="src/android/res/drawable-xdpi/ic_action_stop.png" target="res/drawable-xdpi/" />
+        <resource-file src="src/android/res/drawable-xdpi/ic_action_play.png" target="res/drawable-xdpi/" />
+
+        <resource-file src="src/android/res/drawable-xxdpi/ic_action_mic.png" target="res/drawable-xxdpi/" />
+        <resource-file src="src/android/res/drawable-xxdpi/ic_action_name.png" target="res/drawable-xxdpi/" />
+        <resource-file src="src/android/res/drawable-xxdpi/ic_action_stop.png" target="res/drawable-xxdpi/" />
+        <resource-file src="src/android/res/drawable-xxdpi/ic_action_play.png" target="res/drawable-xxdpi/" />
+
         <framework src="pd.gradle" custom="true" type="gradleReference" />
         
     </platform>
