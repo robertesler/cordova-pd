@@ -125,8 +125,13 @@
         <resource-file src="libs/pd-core-1.0.4.aar" target="libs/pd-core-1.0.4.aar" />
         <resource-file src="www/cordova.pd" target="res/raw/cordova.pd" />
         <!-- These are basic graphics used for a default notification.  See PdPluginService.java ~line 446
-             for where they are used in the code.  -->
-        <resource-file src="src/android/res/values/strings.xml" target="res/values/" />
+             for where they are used in the code.-->
+        <config-file target="res/values/strings.xml" parent="/*">
+            <string name="something">Something</string>
+            <string name="play">Play</string>
+            <string name="stop">stop</string>
+        </config-file>
+
         <resource-file src="src/android/res/drawable-anydpi/ic_action_mic.xml" target="res/drawable-anydpi/" />
         <resource-file src="src/android/res/drawable-anydpi/ic_action_name.xml" target="res/drawable-anydpi/" />
         <resource-file src="src/android/res/drawable-anydpi/ic_action_stop.xml" target="res/drawable-anydpi/" />
@@ -142,21 +147,18 @@
         <resource-file src="src/android/res/drawable-mdpi/ic_action_stop.png" target="res/drawable-mdpi/" />
         <resource-file src="src/android/res/drawable-mdpi/ic_action_play.png" target="res/drawable-mdpi/" />
 
-        <resource-file src="src/android/res/drawable-xdpi/ic_action_mic.png" target="res/drawable-xdpi/" />
-        <resource-file src="src/android/res/drawable-xdpi/ic_action_name.png" target="res/drawable-xdpi/" />
-        <resource-file src="src/android/res/drawable-xdpi/ic_action_stop.png" target="res/drawable-xdpi/" />
-        <resource-file src="src/android/res/drawable-xdpi/ic_action_play.png" target="res/drawable-xdpi/" />
+        <resource-file src="src/android/res/drawable-xhdpi/ic_action_mic.png" target="res/drawable-xhdpi/" />
+        <resource-file src="src/android/res/drawable-xhdpi/ic_action_name.png" target="res/drawable-xhdpi/" />
+        <resource-file src="src/android/res/drawable-xhdpi/ic_action_stop.png" target="res/drawable-xhdpi/" />
+        <resource-file src="src/android/res/drawable-xhdpi/ic_action_play.png" target="res/drawable-xhdpi/" />
 
-        <resource-file src="src/android/res/drawable-xxdpi/ic_action_mic.png" target="res/drawable-xxdpi/" />
-        <resource-file src="src/android/res/drawable-xxdpi/ic_action_name.png" target="res/drawable-xxdpi/" />
-        <resource-file src="src/android/res/drawable-xxdpi/ic_action_stop.png" target="res/drawable-xxdpi/" />
-        <resource-file src="src/android/res/drawable-xxdpi/ic_action_play.png" target="res/drawable-xxdpi/" />
+        <resource-file src="src/android/res/drawable-xxhdpi/ic_action_mic.png" target="res/drawable-xxhdpi/" />
+        <resource-file src="src/android/res/drawable-xxhdpi/ic_action_name.png" target="res/drawable-xxhdpi/" />
+        <resource-file src="src/android/res/drawable-xxhdpi/ic_action_stop.png" target="res/drawable-xxhdpi/" />
+        <resource-file src="src/android/res/drawable-xxhdpi/ic_action_play.png" target="res/drawable-xxhdpi/" />
+
+        <hook type="before_plugin_install" src="scripts/copyDrawables.js" />
 
         <framework src="pd.gradle" custom="true" type="gradleReference" />
-        
     </platform>
-  
-    
-    
-    
 </plugin>
