@@ -5,10 +5,11 @@ var process = require('process');
 
 
 //This script will attempt to copy the temp drawables to the android resource folder
-//If it doesn't work, submit a ticket to https://github.com/robertesler/cordova-pd/issues
+//Currently, it doesn't work as expected, so you have to copy the drawables manually.
 module.exports = function(ctx) {
     // Make sure android platform is part of build
-   	 if (!ctx.opts.plugin.platform.includes('android')) return;
+    console.log(ctx);
+   	 if (!ctx.opts.plugins.platform.includes('android')) return;
 
    	 var files = [
          "src/android/res/drawable-anydpi/ic_action_mic.xml",
@@ -51,7 +52,8 @@ module.exports = function(ctx) {
             if (err) throw err;
         });
     }
-    //Copy our files...the path keeps getting mangled, so I'll put this in the plugin.xml
+
+    //Copy our files...the paths keeps getting mangled, so I'll put this in the plugin.xml
     /*
     var j = 0;
     for(var i = 0; i < files.length; i++)

@@ -67,6 +67,7 @@ public class PdPluginService extends Service {
     private volatile float bufferSizeMillis = 0.0f;
     private MediaSessionCompat mediaSessionCompat;
 
+    private int audio = 1;
 
     /**
      * @return the current audio buffer size in milliseconds (approximate value;
@@ -221,12 +222,14 @@ public class PdPluginService extends Service {
                                 // code for next
                                 //Toast.makeText(getApplication(),"Next is pressed!",Toast.LENGTH_SHORT).show();
                                 return true;
-                            case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                            case KeyEvent.KEYCODE_MEDIA_PLAY:
                                 // code for play/pause
+                                PdBase.sendFloat("on", 1);
                                 //Toast.makeText(getApplication(),"Play Button is pressed!",Toast.LENGTH_SHORT).show();
                                 return true;
                             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
                                 // code for previous
+                                PdBase.sendBang("freq");
                                // Toast.makeText(getApplication(),"Previous is pressed!",Toast.LENGTH_SHORT).show();
                                 return true;
                             case KeyEvent.KEYCODE_MEDIA_REWIND:
@@ -235,6 +238,7 @@ public class PdPluginService extends Service {
                                 return true;
                             case KeyEvent.KEYCODE_MEDIA_STOP:
                                 // code for stop
+                                PdBase.sendFloat("on", 0);
                                 //Toast.makeText(getApplication(),"----Stop Button is pressed!---",Toast.LENGTH_SHORT).show();
                                 return true;
 
@@ -344,7 +348,7 @@ public class PdPluginService extends Service {
                                 PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS |
                                 PlaybackStateCompat.ACTION_SKIP_TO_NEXT |
                                 PlaybackStateCompat.ACTION_FAST_FORWARD |
-                                PlaybackStateCompat.ACTION_PLAY_PAUSE);
+                                PlaybackStateCompat.ACTION_PLAY);
 
         mediaSessionCompat.setPlaybackState(mStateBuilder.build());
         mediaSessionCompat.setActive(true);
@@ -411,7 +415,7 @@ public class PdPluginService extends Service {
                 .addAction(new NotificationCompat.Action(
                         R.drawable.ic_action_play, "Play",
                         MediaButtonReceiver.buildMediaButtonPendingIntent(getApplicationContext(),
-                                PlaybackStateCompat.ACTION_FAST_FORWARD)))
+                                PlaybackStateCompat.ACTION_PLAY)))
 
                 // Take advantage of MediaStyle features
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()

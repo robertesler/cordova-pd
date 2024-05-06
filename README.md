@@ -82,7 +82,8 @@ The Android version is now stable.  After adding the platform and plugin:
 ```
 <plugin name="org.urbanstew.cordova.pd" spec="0.0.9" />
 ```
-2) Then either add the android platform or try:
+2) Copy the drawables in the /src/android/res/* to your platform/android/app/src/main/res folder.  I've tried to automate this, but it never seems to work as expected.
+3) Then either add the android platform or try:
 ```
 cordova prepare android
 ```

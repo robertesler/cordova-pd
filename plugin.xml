@@ -131,7 +131,8 @@
             <string name="play">Play</string>
             <string name="stop">stop</string>
         </config-file>
-
+        <!--  This was an experiment to copy over the drawables to the appropriate folder, it doesn't work apparently.
+          You will have to do this manually to avoid errors.
         <resource-file src="src/android/res/drawable-anydpi/ic_action_mic.xml" target="res/drawable-anydpi/" />
         <resource-file src="src/android/res/drawable-anydpi/ic_action_name.xml" target="res/drawable-anydpi/" />
         <resource-file src="src/android/res/drawable-anydpi/ic_action_stop.xml" target="res/drawable-anydpi/" />
@@ -157,8 +158,8 @@
         <resource-file src="src/android/res/drawable-xxhdpi/ic_action_stop.png" target="res/drawable-xxhdpi/" />
         <resource-file src="src/android/res/drawable-xxhdpi/ic_action_play.png" target="res/drawable-xxhdpi/" />
 
-        <hook type="before_plugin_install" src="scripts/copyDrawables.js" />
-
+        <hook type="before_plugin_add" src="scripts/copyDrawables.js" />
+        -->
         <framework src="pd.gradle" custom="true" type="gradleReference" />
     </platform>
 </plugin>
