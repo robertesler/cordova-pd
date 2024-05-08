@@ -120,7 +120,7 @@
     {
         //OFF
         // make sure you have a receive called 'on' in your pd patch
-        [PdBase sendFloat:2 toReceiver:@"on"];
+        [PdBase sendFloat:0 toReceiver:@"on"];
         
         Class playingInfoCenter = NSClassFromString(@"MPNowPlayingInfoCenter");
         if(playingInfoCenter) {
@@ -171,7 +171,7 @@
 -(MPRemoteCommandHandlerStatus) prevTrack: (MPRemoteCommandHandlerStatus *)event
 {
     // make sure you have a receive called 'prev' in your pd patch
-    [PdBase sendBangToReceiver: @"prev"];
+    [PdBase sendBangToReceiver: @"freq"];
     return MPRemoteCommandHandlerStatusSuccess;
 }
 
