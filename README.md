@@ -1,6 +1,3 @@
-# UPDATE
-I have updated as of April 1, 2022 to the most recent libpd package for iOS and Android.  You can of course always update the libp packages manually if you like, but you would need to know a little bit about how a cordova plugin works.
- 
 # Introduction
 This plugin is meant to unite the libpd and cordova frameworks so app developers can 
 also have the power of Pure Data for audio and music synthesis.  
@@ -23,7 +20,7 @@ Right now you can only use the library on an iOS device.  The iOS simulator seem
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.8" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.12" />
 ```
 2) Then either add the iOS platform or try:
 ```
@@ -42,6 +39,8 @@ cordova prepare ios
 6) Add your pd patch(es) to the project's Resource folder in Xcode. (right-click on the Resources folder and "Add Files...").  The patch should be in the root /www folder.
 
 7) If you want to test in the simulator see the REAME.md file in the x86_64 folder.
+   
+8) If you want your app to run audio in the background make sure to edit your Signing and Capabilities, then Background Modes.  This library includes a basic lock screen notification.
 
 ##NOTE:
 
@@ -76,11 +75,13 @@ Messages and Lists:  Right now the API for these is still not fully tested. Sinc
 
 ## Instructions for Android 
 
-The Android version is now stable.  After adding the platform and plugin:
+The Android version is now stable.  It currently comes with an Android Servie that allows the application to run audio in the background with a customizable lock screen notification.
+
+After adding the platform and plugin:
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.9" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.12" />
 ```
 2) Copy the drawables in the /src/android/res/* to your platform/android/app/src/main/res folder.  I've tried to automate this, but it never seems to work as expected.
 3) Then either add the android platform or try:
