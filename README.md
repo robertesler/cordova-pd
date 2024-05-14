@@ -6,7 +6,9 @@ I assume the following:
 1) You already know how to use Pure Data.
 2) You are familiar with the Cordova framework and how to use and install plugins.
 3) You have at least some basic knowledge of programming in different languages like Obj-C, Java and web languages.
- 
+
+## Copyright
+cordova-pd is copyrighted by Robert Esler and part of the non-profit urbanSTEW, 2024.
 ## Installing the library
 
 To clone the repository to the root plugins folder try:
