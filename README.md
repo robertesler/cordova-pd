@@ -9,6 +9,12 @@ I assume the following:
 
 ## Copyright
 cordova-pd is copyrighted by Robert Esler and part of the non-profit urbanSTEW, 2024.
+
+## Example
+Here is an example of an app that uses this library:
+1) iOS, https://apps.apple.com/vn/app/troooba/id6480323332
+2) Android, https://play.google.com/store/apps/details?id=org.urbanstew.troooba
+   
 ## Installing the library
 
 To clone the repository to the root plugins folder try:
