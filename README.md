@@ -1,6 +1,6 @@
 # Introduction
 This plugin is meant to unite the libpd and cordova frameworks so app developers can 
-also have the power of Pure Data for audio and music synthesis.  
+also have access to Pure Data, via libpd, for audio and music synthesis.  
 
 I assume the following:
 1) You already know how to use Pure Data.
@@ -83,7 +83,7 @@ Messages and Lists:  Right now the API for these is still not fully tested. Sinc
 
 ## Instructions for Android 
 
-The Android version is now stable.  It currently comes with an Android Servie that allows the application to run audio in the background with a customizable lock screen notification.
+The Android version is now stable.  It currently comes with an Android Service that allows the application to run audio in the background with a customizable lock screen notification.
 
 After adding the platform and plugin:
 
@@ -100,7 +100,7 @@ The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When t
 it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
 you plan to release both iOS and Android.  
 
-If you want cordova to copy your .pd file from /www you can try uncommenting the line:
+If you want cordova to copy your .pd file from /www you can try uncommenting the line #116 in plugin.xml:
 ```
 <hook type="before_prepare" src="scripts/copyPdFile.js" />
 ```
@@ -120,7 +120,6 @@ to reflect the package name of your app.  I found the package name in the /platf
 
 The Angular JS wrapper for this plugin allows you to use cordova-pd in Ionic
 projects and any other projects that use Angular JS.  Currently, the plugin only supports Angular JS version 1, not the newer version 2 or Angular.io.
-However, if you have a good example of using this plugin with Angular.io I will accept pull requests.  
 
 To use the plugin add ng-cordova-pd.js to your root /www/js and  to your index.html:
 ```
@@ -156,7 +155,7 @@ Just replace the 'sendBang' portion with the appropriate method.
 
 ## API
 
-###Sending Data to Pd
+## Sending Data to Pd
 
 Send a bang to a receiver
 ```
@@ -179,7 +178,7 @@ Send a list to a receiver, make sure your list is a single string '1 2 3'
 window.plugins.pd.sendList("receiveName", list)
 ```
 
-###Receiving Data from Pd
+## Receiving Data from Pd
 
 Receive a bang from a sender (returns a bool set as true)
 ```
