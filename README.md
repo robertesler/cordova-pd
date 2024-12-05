@@ -1,15 +1,20 @@
-# UPDATE
-I have updated as of April 1, 2022 to the most recent libpd package for iOS and Android.  You can of course always update the libp packages manually if you like, but you would need to know a little bit about how a cordova plugin works.
- 
 # Introduction
 This plugin is meant to unite the libpd and cordova frameworks so app developers can 
-also have the power of Pure Data for audio and music synthesis.  
+also have access to Pure Data, via libpd, for audio and music synthesis.  
 
 I assume the following:
 1) You already know how to use Pure Data.
 2) You are familiar with the Cordova framework and how to use and install plugins.
 3) You have at least some basic knowledge of programming in different languages like Obj-C, Java and web languages.
- 
+
+## Copyright
+cordova-pd is copyrighted by Robert Esler and part of the non-profit urbanSTEW, 2024.
+
+## Example
+Here is an example of an app that uses this library:
+1) iOS, https://apps.apple.com/vn/app/troooba/id6480323332
+2) Android, https://play.google.com/store/apps/details?id=org.urbanstew.troooba
+   
 ## Installing the library
 
 To clone the repository to the root plugins folder try:
@@ -23,7 +28,7 @@ Right now you can only use the library on an iOS device.  The iOS simulator seem
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.8" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.12" />
 ```
 2) Then either add the iOS platform or try:
 ```
@@ -42,6 +47,8 @@ cordova prepare ios
 6) Add your pd patch(es) to the project's Resource folder in Xcode. (right-click on the Resources folder and "Add Files...").  The patch should be in the root /www folder.
 
 7) If you want to test in the simulator see the REAME.md file in the x86_64 folder.
+   
+8) If you want your app to run audio in the background make sure to edit your Signing and Capabilities, then Background Modes.  This library includes a basic lock screen notification.
 
 ##NOTE:
 
@@ -76,11 +83,13 @@ Messages and Lists:  Right now the API for these is still not fully tested. Sinc
 
 ## Instructions for Android 
 
-The Android version is now stable.  After adding the platform and plugin:
+The Android version is now stable.  It currently comes with an Android Service that allows the application to run audio in the background with a customizable lock screen notification.
+
+After adding the platform and plugin:
 
 1) Check the config.xml to make sure org.urbanstew.cordova.pd has been added for example (cordova should do this automatically:
 ```
-<plugin name="org.urbanstew.cordova.pd" spec="0.0.9" />
+<plugin name="org.urbanstew.cordova.pd" spec="0.0.12" />
 ```
 2) Copy the drawables in the /src/android/res/* to your platform/android/app/src/main/res folder.  I've tried to automate this, but it never seems to work as expected.
 3) Then either add the android platform or try:
@@ -91,7 +100,7 @@ The plugin looks for a patch named cordova.pd in the res/raw/ directory.  When t
 it will copy the demo cordova.pd patch to this directory.  Just make sure to keep track of this if 
 you plan to release both iOS and Android.  
 
-If you want cordova to copy your .pd file from /www you can try uncommenting the line:
+If you want cordova to copy your .pd file from /www you can try uncommenting the line #116 in plugin.xml:
 ```
 <hook type="before_prepare" src="scripts/copyPdFile.js" />
 ```
@@ -111,7 +120,6 @@ to reflect the package name of your app.  I found the package name in the /platf
 
 The Angular JS wrapper for this plugin allows you to use cordova-pd in Ionic
 projects and any other projects that use Angular JS.  Currently, the plugin only supports Angular JS version 1, not the newer version 2 or Angular.io.
-However, if you have a good example of using this plugin with Angular.io I will accept pull requests.  
 
 To use the plugin add ng-cordova-pd.js to your root /www/js and  to your index.html:
 ```
@@ -147,7 +155,7 @@ Just replace the 'sendBang' portion with the appropriate method.
 
 ## API
 
-###Sending Data to Pd
+## Sending Data to Pd
 
 Send a bang to a receiver
 ```
@@ -170,7 +178,7 @@ Send a list to a receiver, make sure your list is a single string '1 2 3'
 window.plugins.pd.sendList("receiveName", list)
 ```
 
-###Receiving Data from Pd
+## Receiving Data from Pd
 
 Receive a bang from a sender (returns a bool set as true)
 ```
