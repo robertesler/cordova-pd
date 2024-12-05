@@ -5,6 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import <Cordova/CDVPlugin.h>
+#import <MediaPlayer/MediaPlayer.h>
 #import "PdBase.h"
 #import "PdAudioController.h"
 #import "PdDispatcher.h"
