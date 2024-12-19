@@ -202,7 +202,7 @@
     //type check each argument
     for (NSString* tokens in argList)
     {
-        if ([tokens rangeOfCharacterFromSet:notDigits].location == NSNotFound)
+        if([self isStringNumeric:tokens])
         {
             //String is probably a number
             float f = [tokens floatValue];
@@ -216,6 +216,12 @@
     
     [PdBase sendMessage:message withArguments:list toReceiver:receiveName];
     
+}
+
+- (BOOL)isStringNumeric:(NSString *)string {
+    NSScanner *scanner = [NSScanner scannerWithString:string];
+    double result;
+    return [scanner scanDouble:&result] && [scanner isAtEnd];
 }
 
 - (void)sendBang: (CDVInvokedUrlCommand *)command

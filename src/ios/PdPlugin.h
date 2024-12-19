@@ -33,6 +33,7 @@ PdDispatcher *dispatcher;
 - (MPRemoteCommandHandlerStatus) pauseAudio: (MPRemoteCommandHandlerStatus *)event;
 - (void)sendFloat:(CDVInvokedUrlCommand*)command;
 - (void)sendMessage: (CDVInvokedUrlCommand* )command;
+- (BOOL)isStringNumeric:(NSString *)string;
 - (void)sendBang: (CDVInvokedUrlCommand *)command;
 - (void)sendSymbol: (CDVInvokedUrlCommand *)command;
 - (void)sendList: (CDVInvokedUrlCommand *)command;
